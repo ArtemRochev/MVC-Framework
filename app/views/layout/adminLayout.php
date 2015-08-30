@@ -18,11 +18,12 @@
 
 		<ul class="menu">
 			<li><a href="/admin?a=show-panel">Главная</a></li>
-			<li><a href="/admin?a=show-panel&part=comments">Коментарии</a></li>
+			<li><a href="/admin?a=show-articles">Статьи</a></li>
+			<li><a href="/admin?a=show-comments">Коментарии</a></li>
 		</ul>
 
 		<?php
-			include PROJ_PATH . 'app/views/' . $contentView;
+			include VIEWS_PATH . $contentView;
 		?>
 	</div>
 </body>

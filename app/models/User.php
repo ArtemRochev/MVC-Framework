@@ -4,6 +4,7 @@ require_once(PROJ_PATH . 'app/core/Model.php');
 
 class User extends Model {
 	protected $columns = ['name', 'email'];
+	protected $parent = '';
 
 	function checkUserExists($userEmail) {
 		return User::checkExists("user", "email", $userEmail)['isExist'];

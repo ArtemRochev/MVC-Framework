@@ -92,7 +92,7 @@ class Router {
 
 		$modelName = 'Model' . $controllerName;
 		$controllerName = 'Controller' . $controllerName;
-//
+
 //		echo "Controller: $controllerName <br>";
 //		echo "Action: $actionName <br>";
 //		echo "Model: $modelName <br>";

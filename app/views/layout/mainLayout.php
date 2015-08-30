@@ -15,9 +15,10 @@
 <body>
 	<div id="topPanel">
 		<ul>
-		  <li><a href="/" class="title">Home</a></li>
-		  <li><a href="/comments" class="title">Comments</a></li>
-		  <li><a href="/admin" class="title">Admin</a></li>
+			<li><a href="/" class="title">Home</a></li>
+			<li><a href="/article" class="title">Article</a></li>
+			<li><a href="/comments" class="title">Comments</a></li>
+			<li><a href="/admin" class="title">Admin</a></li>
 		</ul>
 	</div>
 

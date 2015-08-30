@@ -1,7 +1,7 @@
 <?php
 
 class DatabaseRecord {
-    private static $deleteQuery = 'DELETE FROM `%1$s` WHERE %1$s_id=?';
+    private static $deleteQuery = 'DELETE FROM `%1$s` WHERE id=?';
     private static $insertQuery = 'INSERT INTO `%1$s` (%2$s) VALUES (%3$s)';
     private static $listQuery   = 'SELECT * FROM `%s`';
     private static $selectQuery = 'SELECT * FROM `%1$s` WHERE %1$s_id=?';
@@ -36,10 +36,8 @@ class DatabaseRecord {
         
         $this->load();
 
-        if ( isset($this->parent) ) {
-            if ( $name == $this->parent ) {
-                return $this->getParent($this->parent);
-            }
+        if ( $name == $this->parent ) {
+            return $this->getParent($this->parent);
         }
         
         return $this->getColumn($name);
@@ -56,23 +54,27 @@ class DatabaseRecord {
         }
         
         $query = sprintf(self::$deleteQuery, $this->table);
+
         $this->execute($query, array($this->id), false);
     }
 
     public function getColumn($name) {
-        if ( $name == 'id ') {
-            return $this->id;
+        if ( $name == 'id') {
+            return $this->fields['id'];
         }
-        
+        if ( $name == $this->parent ) {
+            if ( isset($this->fields[$name . '_id']) ) {
+                return $this->fields[$name . '_id'];
+            } else {
+                return $this->fields[$this->table . '_' . $name . '_id'];
+            }
+        }
+
         return $this->fields[$this->table . "_" . $name];
     }
 
     public function getParent($name) {
-        //echo "getParent()\n";
-        
-        $user = new User($this->getColumn($name . "_id"));
-        
-        return $user;
+        return new User($this->getColumn($name));
     }
     
     public function save() {
@@ -88,7 +90,12 @@ class DatabaseRecord {
     }
 
     public function setColumn($name, $value) {
-        $this->fields[$this->table . "_" . $name] = $value;
+        if ( $name == $this->parent . '_id' ) {
+            $this->fields[$name] = $value;
+        } else {
+            $this->fields[$this->table . "_" . $name] = $value;
+        }
+
         $this->modified = true;
     }
     
@@ -145,10 +152,8 @@ class DatabaseRecord {
     }
     
     private function execute($query, $args, $isReturningData = true) {
-        //echo $query . "\n";
-        
         $query = self::$db->prepare($query);
-        
+
         try {
             $query->execute($args);
         } catch (PDOException $e) {

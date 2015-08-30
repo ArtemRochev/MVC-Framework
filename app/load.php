@@ -11,6 +11,7 @@ require_once('core/db/DatabaseRecord.php');
 
 define("PHP_EXT", '.php');
 define('PROJ_PATH', '/home/artem/server/nginx/www/book/');
+define('VIEWS_PATH', PROJ_PATH . 'app/views/');
 
 try {
 	$db = new PDO("mysql:dbname=" . $config['db']['name'] . ";host=127.0.0.1", "book", "1111");

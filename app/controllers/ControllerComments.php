@@ -10,7 +10,7 @@ class ControllerComments extends Controller {
 	
 	function actionIndex() {
 		$this->view->render(
-			'main.php',
+			'mainLayout.php',
 			'comments.php',
 			Comment::getComments()
 		);

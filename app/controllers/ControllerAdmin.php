@@ -8,10 +8,23 @@ class ControllerAdmin extends Controller {
 		$this->checkAuth();
 	}
 	
-	function actionShowAdminPanel() {
+	function actionShowPanel() {
+		isset($_GET['part'])
+			? $section = $_GET['part']
+			: $section = 'index';
+
+		$section .= PHP_EXT;
+
+		//var_dump(VIEWS_PATH . 'admin/' . $section);
+		//die();
+
+		if ( !file_exists(VIEWS_PATH . 'admin/' . $section) ) {
+			$this->redirect('404');
+		}
+
 		$this->view->render(
-			'mainAdmin.php',
-			'admin.php',
+			'adminLayout.php',
+			'admin/' . $section,
 			Comment::getComments()
 		);
 	}
@@ -26,7 +39,7 @@ class ControllerAdmin extends Controller {
 	
 	function actionShowLoginPanel() {
 		$this->view->render(
-			'empty.php',
+			'emptyLayout.php',
 			'authPanel.php'
 		);
 	}
@@ -37,7 +50,7 @@ class ControllerAdmin extends Controller {
 			: $pass = "";
 
 		if ( $pass == '123' ) {
-			return $this->redirect('admin?a=show-admin-panel');
+			return $this->redirect('admin?a=show-panel');
 		} else {
 			return $this->redirect('admin?a=show-login-panel');
 		}

@@ -2,6 +2,6 @@
 
 class View {
 	function render($viewName, $contentView = 'main.php', $data = null) {
-		include(PROJ_PATH . 'app/views/layout/' . $viewName);
+		include(VIEWS_PATH . 'layout/' . $viewName);
 	}
 }

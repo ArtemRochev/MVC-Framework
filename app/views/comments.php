@@ -1,13 +1,15 @@
-<?php
-	foreach ( $data as $comment ) {
-		echo sprintf(file_get_contents(PROJ_PATH . 'app/views/commentBlock.php'),
-			$comment->user->name,
-			$comment->text,
-			$comment->time
-		);
-	}
+<div id="commentsList">
+	<?php
+		foreach ( $data as $comment ) {
+			echo sprintf(file_get_contents(PROJ_PATH . 'app/views/commentBlock.php'),
+				$comment->user->name,
+				$comment->text,
+				$comment->time
+			);
+		}
 
-?>
+	?>
+</div>
 
 <form id="addComment" role="form" method="post" action="/comments/save">
 	<h3>Оставить комментарий</h3>

@@ -2,6 +2,6 @@
 
 class ControllerMain extends Controller {
 	function actionIndex() {
-		$this->view->render('main.php');
+		$this->view->render('mainLayout.php');
 	}
 }

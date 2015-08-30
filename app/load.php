@@ -14,8 +14,13 @@ define('PROJ_PATH', '/home/artem/server/nginx/www/book/');
 define('VIEWS_PATH', PROJ_PATH . 'app/views/');
 
 try {
-	$db = new PDO("mysql:dbname=" . $config['db']['name'] . ";host=127.0.0.1", "book", "1111");
-	$db->exec("SET CHARACTER SET utf8");
+	$db = new PDO("mysql:" .
+		"dbname=" . $config['db']['name'] .
+		";host=" .  $config['db']['host'],
+					$config['db']['user'],
+					$config['db']['pass']);
+
+	$db->exec("SET CHARACTER SET" . $config['character']);
 	
 	DatabaseRecord::setDatabase($db);
 } catch (PDOException $e) {

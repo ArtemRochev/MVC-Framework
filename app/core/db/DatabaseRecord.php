@@ -4,9 +4,10 @@ class DatabaseRecord {
     private static $deleteQuery = 'DELETE FROM `%1$s` WHERE id=?';
     private static $insertQuery = 'INSERT INTO `%1$s` (%2$s) VALUES (%3$s)';
     private static $listQuery   = 'SELECT * FROM `%s`';
-    private static $selectQuery = 'SELECT * FROM `%1$s` WHERE %1$s_id=?';
+    private static $selectQuery = 'SELECT * FROM `%1$s` WHERE id=?';
+    private static $selectQueryByNamedId = 'SELECT * FROM `%1$s` WHERE %1$s_id=?'; //REFACTOR!!
     private static $selectByFieldQuery = 'SELECT * FROM `%1$s` WHERE %1$s_%2$s=?';
-    private static $updateQuery = 'UPDATE `%1$s` SET %2$s WHERE %1$s_id=?';
+    private static $updateQuery = 'UPDATE `%1$s` SET %2$s WHERE id=?';
     private static $lastIdQuery = 'SELECT LAST_INSERT_ID()';
     private static $existQuery = 'SELECT EXISTS(SELECT * FROM %1$s WHERE %1$s_%2$s=?) as isExist';
     private static $charsetQuery = 'SET NAMES %1$s';
@@ -59,13 +60,15 @@ class DatabaseRecord {
     }
 
     public function getColumn($name) {
-        if ( $name == 'id') {
+        if ( $name == 'id' && isset($this->fields['id']) ) {
             return $this->fields['id'];
         }
         if ( $name == $this->parent ) {
+
             if ( isset($this->fields[$name . '_id']) ) {
                 return $this->fields[$name . '_id'];
             } else {
+                die('ss');
                 return $this->fields[$this->table . '_' . $name . '_id'];
             }
         }
@@ -106,6 +109,16 @@ class DatabaseRecord {
     public static function getRecordDataByField($table, $field, $value) {
         return self::execute(sprintf(self::$selectByFieldQuery, $table, $field), array($value));
     }
+
+    public static function findOne($id = null) {
+        if ( !$id ) {
+            return;
+        }
+
+        $type = get_called_class();
+
+        return new $type($id);
+    }
     
     public static function all() {
         self::initDatabase();
@@ -114,8 +127,6 @@ class DatabaseRecord {
         $table = strtolower($type);
         $objList = [];
         $rowCount;
-        
-        //echo sprintf(self::$listQuery, $table);
         
         $list = self::$db->query(sprintf(self::$listQuery, $table));
         $list = $list->fetchAll(PDO::FETCH_ASSOC);
@@ -192,15 +203,19 @@ class DatabaseRecord {
         if ( $this->id == NULL || $this->loaded ) {
             return false;
         }
-        
-        $row = $this->execute(sprintf(self::$selectQuery, $this->table), array($this->id));
-        
+
+        if ( in_array('id', $this->columns) ) {
+            $row = $this->execute(sprintf(self::$selectQueryByNamedId, $this->table), array($this->id));
+        } else {
+            $row = $this->execute(sprintf(self::$selectQuery, $this->table), array($this->id));
+        }
+
         foreach ($this->columns as $column) {
             $column = $this->table . "_" . $column;
             
             $this->fields[$column] = $row[$column];
         }
-        
+
         $this->modified = false;
         $this->loaded = true;
         

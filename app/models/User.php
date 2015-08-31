@@ -1,9 +1,9 @@
 <?php
 
-require_once(PROJ_PATH . 'app/core/Model.php');
+require_once(CORE_PATH . 'base/Model.php');
 
 class User extends Model {
-	protected $columns = ['name', 'email'];
+	protected $columns = ['id', 'name', 'email'];
 	protected $parent = '';
 
 	function checkUserExists($userEmail) {

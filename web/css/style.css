@@ -10,25 +10,61 @@ form input {
 	width: 90%;
 }
 
-body {
-	max-width: 1200px;
-	margin: auto;
+.title {
+	color: lightslategrey;
 }
+
+.title a:hover {
+	color: black;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.page {
+	position: relative;
+	width: 100%;
+	margin-bottom: 20px;
+	padding: 40px;
+	box-shadow: 1px 1px 5px 1px gray;
+}
+
+.page .time {
+	padding-top: 10px;
+	font-size: 0.8rem;
+	color: gray;
+}
+
+.w-limmiter {
+	max-width: 1000px;
+}
+
+.center-text {
+	text-align: center;
+}
+
+.big-title {
+	font-size: 4.5rem;
+}
+
 
 #content {
 	width: 80%;
 	margin: auto;
+	padding-top: 80px;
 }
 
 #topPanel {
+	position: absolute;
+	width: 100%;
+	left: 0;
 	height: 60px;
-	margin-bottom: 20px;
 	line-height: 60px;
 	font-size: 0;
 	font-family: 'Play', sans-serif;
-	box-shadow: 0 0px 12px 1px rgba(0,0,0,0.3), inset 0 0 25px 5px rgba(0,0,0,0.2);
-	background: url(http://colourlovers.com.s3.amazonaws.com/images/patterns/582/582552.png?1250954754);
-	-background: url(http://colourlovers.com.s3.amazonaws.com/images/patterns/3/3267.png?1197378870);
+	box-shadow: 0 0px 5px 1px rgba(0,0,0,0.3);
+	background: lightblue;
 }
 
 #topPanel ul {
@@ -62,7 +98,6 @@ body {
 	height: 100%;
 	line-height: 40px;
 	text-decoration: none;
-	text-shadow: 1px 1px 0 white;
 	margin: 0;
 	text-align: center;
 	color: black;
@@ -100,14 +135,6 @@ body {
 }
 
 .article-block {
-	position: relative;
-	width: 100%;
-	min-width: 400px;
-	max-height: 400px;
-	margin-bottom: 20px;
-	padding: 15px;
-	overflow: hidden;
-	box-shadow: 1px 1px 5px 1px gray;
 }
 
 .article-block .title {
@@ -115,12 +142,9 @@ body {
 }
 
 .article-block .content {
+	max-height: 400px;
 	margin: 20px 0 5px 0;
-}
-
-.article-block .time {
-	font-size: 0.6rem;
-	color: gray;
+	overflow: hidden;
 }
 
 .comment-block {

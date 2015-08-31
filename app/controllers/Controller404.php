@@ -2,6 +2,10 @@
 
 class Controller404 extends Controller {
 	function actionIndex() {
-		echo '<b>404</b>';
+		if ( isset($_GET['route']) ) {
+			return $this->view->render('emptyLayout', '404', htmlspecialchars($_GET['route']));
+		}
+
+		return $this->view->render('emptyLayout', '404');
 	}
 }

@@ -19,7 +19,6 @@
 		<ul class="menu">
 			<li><a href="/admin?a=show-panel">Главная</a></li>
 			<li><a href="/admin?a=show-articles">Статьи</a></li>
-			<li><a href="/admin?a=show-comments">Коментарии</a></li>
 		</ul>
 
 		<?php

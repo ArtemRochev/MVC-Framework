@@ -1,8 +1,6 @@
 <?php
 
-use core\config;
-
-require_once(PROJ_PATH . 'app/core/Model.php');
+require_once(CORE_PATH . 'base/Model.php');
 
 class Comment extends Model {
 	protected $columns = ['id', 'text', 'time'];

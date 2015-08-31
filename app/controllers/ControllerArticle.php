@@ -8,29 +8,23 @@ class ControllerArticle extends Controller {
 		Controller::__construct();
 	}
 	
-	function actionIndex() {
+	public function actionIndex() {
 		$this->view->render(
-			'mainLayout.php',
-			'articles.php',
+			'mainLayout',
+			'articles',
 			Article::getArticles()
 		);
 	}
 	
-	function actionSave() {
-		//echo "Name: " . $_POST['name'] . "<br>";
-		//echo "Name: " . $_POST['email'] . "<br>";
-		//echo "Name: " . $_POST['text'] . "<br>";
-		
-		$userId = 0;
-		
-//		if ( !User::checkUserExists($_POST['email']) ) {
-//			$userId = $this->modelUsers->addUser($_POST['name'], $_POST['email']);
-//		} else {
-//			$userId = User::getRecordDataByField("user", "email", $_POST['email'])['user_id'];
-//		}
+	public function actionShowArticle() {
+		if ( !$_GET['id'] ) {
+			return Controller::redirectTo404($_SERVER['REQUEST_URI']);
+		}
 
-		Comment::saveComment(1);
+		if ( $article = Article::getArticle($_GET['id']) ) {
+			return $this->view->render('mainLayout', 'showArticle', $article);
+		}
 
-		$this->redirect('/comments');
+		return Controller::redirectTo404($_SERVER['REQUEST_URI']);
 	}
 }

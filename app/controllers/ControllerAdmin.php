@@ -11,30 +11,30 @@ class ControllerAdmin extends Controller {
 	
 	function actionShowPanel() {
 		$this->view->render(
-			'adminLayout.php'
+			'adminLayout'
 		);
 	}
 
 	function actionShowArticles() {
 		$this->view->render(
-			'adminLayout.php',
-			'admin/articles.php',
+			'adminLayout',
+			'admin/articles',
 			Article::getArticles()
 		);
 	}
 
 	function actionShowComments() {
 		$this->view->render(
-			'adminLayout.php',
-			'admin/comments.php',
+			'adminLayout',
+			'admin/comments',
 			Comment::getComments()
 		);
 	}
 	
 	function actionShowLoginPanel() {
 		$this->view->render(
-			'emptyLayout.php',
-			'authPanel.php'
+			'emptyLayout',
+			'authPanel'
 		);
 	}
 	
@@ -44,9 +44,9 @@ class ControllerAdmin extends Controller {
 			: $pass = "";
 
 		if ( $pass == '123' ) {
-			return $this->redirect('admin?a=show-panel');
+			return Controller::redirect('admin?a=show-panel');
 		} else {
-			return $this->redirect('admin?a=show-login-panel');
+			return Controller::redirect('admin?a=show-login-panel');
 		}
 	}
 
@@ -59,15 +59,13 @@ class ControllerAdmin extends Controller {
 
 		$article->save();
 
-		return $this->redirect('/admin?a=show-articles');
+		return Controller::redirect('/admin?a=show-articles');
 	}
 
 	public function actionDeleteArticle() {
 		$article = new Article($_POST['id']);
-		var_dump($article);
-		//die();
 		$article->delete();
 
-		return $this->redirect('/admin?a=show-articles');
+		return Controller::redirect('/admin?a=show-articles');
 	}
 }

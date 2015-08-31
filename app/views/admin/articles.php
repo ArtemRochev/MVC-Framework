@@ -1,7 +1,7 @@
 <?php
 
 foreach ( $data as $article ) {
-    echo sprintf(file_get_contents(VIEWS_PATH . 'admin/articleBlock.php'),
+	echo sprintf(file_get_contents(VIEWS_PATH . 'admin/articleBlock.php'),
         $article->title,
         $article->author->name,
         $article->created,

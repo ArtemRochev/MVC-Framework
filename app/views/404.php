@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>404</title>
-
-</head>
-<body>
-	<h1>404</h1>
-	<p>Не то пальто :(</p>
-</body>
-</html>
+<h1 class="big-title center-text">404</h1>
+<p class="center-text">Not found</p>
+<br>
+<p class="center-text">Route: <?= $data ?></>

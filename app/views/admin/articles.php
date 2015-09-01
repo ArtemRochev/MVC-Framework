@@ -5,6 +5,7 @@ foreach ( $data as $article ) {
         $article->title,
         $article->author->name,
         $article->created,
+		$article->img_preview_url,
         $article->content,
         $article->id
     );
@@ -21,7 +22,10 @@ foreach ( $data as $article ) {
 		<input type="text" name="title" required>
 
 		<label>Ид автора</label>
-		<input type="text" value="2" name="author_id" required>
+		<input type="text" value="1" name="author_id" required>
+
+		<label>Картинка превью</label>
+		<input type="text" name="img_preview_url">
 	</div>
 	<div class="form-group">
 		<label>Текст</label>

@@ -44,12 +44,19 @@ body {
 }
 
 .article-block .title {
+    padding-right: 110px;
     font-size: 1.3rem;
 }
 
+.article-block img {
+    padding-right: 15px;
+    max-width: 200px;
+    float: left;
+}
+
 .article-block .content {
-    max-height: 100px;
-    margin: 20px 0 5px 0;
+    max-height: 80px;
+    margin: 20px 0 0 0;
     overflow: hidden;
 }
 
@@ -58,20 +65,34 @@ body {
     color: gray;
 }
 
-.article-block .delete-btn {
+.article-block .article-control-btn {
     position: absolute;
-    top: 15px;
     right: 15px;
-    width: 30px;
+    width: 90px;
     height: 30px;
+    text-align: center;
     cursor: pointer;
+    color: lightgoldenrodyellow;
     border-radius: 5px;
     border: none;
+}
+
+.article-block .delete-btn {
+    top: 15px;
     background: lightcoral;
 }
 
 .article-block .delete-btn:hover {
-    background: red;
+    background: rgb(234, 93, 93);
+}
+
+.article-block .modify-btn {
+    top: 50px;
+    background: lightskyblue;
+}
+
+.article-block .modify-btn:hover {
+    background: rgb(68, 160, 190);
 }
 
 .comment-block {

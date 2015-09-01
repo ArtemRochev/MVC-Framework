@@ -4,6 +4,8 @@ require_once(PROJ_PATH . 'app/models/Article.php');
 require_once(PROJ_PATH . 'app/models/Comment.php');
 require_once(PROJ_PATH . 'app/models/User.php');
 
+require_once(PROJ_PATH . 'app/controllers/ControllerArticle.php');
+
 class ControllerAdmin extends Controller {
 	function actionIndex() {
 		$this->checkAuth();
@@ -51,15 +53,9 @@ class ControllerAdmin extends Controller {
 	}
 
 	public function actionSaveArticle() {
-		$article = new Article;
-
-		$article->author_id = $_POST['author_id'];
-		$article->title = $_POST['title'];
-		$article->content = $_POST['content'];
-
-		$article->save();
-
-		return Controller::redirect('/admin?a=show-articles');
+		//var_dump($_POST);
+		//die();
+		ControllerArticle::saveArticle($_POST);
 	}
 
 	public function actionDeleteArticle() {

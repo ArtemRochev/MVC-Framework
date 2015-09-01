@@ -1,11 +1,14 @@
 <div class="article-block page">
-	<a class="title" href="/article?a=show-article&id=%s">
-		%s
-	</a>
-	<p class="content">
-		%s
-	</p>
-	<p class="time">
-		%s
-	</p>
+	<div class="content">
+		<a class="title" href="/article?a=show-article&id=%s">
+			%s
+		</a>
+		<img src="%s" alt="">
+		<p class="text">
+			%s
+		</p>
+		<p class="time">
+			%s
+		</p>
+	</div>
 </div>

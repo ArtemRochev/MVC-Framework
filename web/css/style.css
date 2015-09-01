@@ -1,59 +1,5 @@
-p {
-	margin: 0;
-}
-
-h1, h2, h3 {
-	font-family: 'Play', sans-serif;
-}
-
-form input {
-	width: 90%;
-}
-
-.title {
-	color: lightslategrey;
-}
-
-.title a:hover {
-	color: black;
-}
-
-a:hover {
-	text-decoration: none;
-}
-
-.page {
-	position: relative;
-	width: 100%;
-	margin-bottom: 20px;
-	padding: 40px;
-	box-shadow: 1px 1px 5px 1px gray;
-}
-
-.page .time {
-	padding-top: 10px;
-	font-size: 0.8rem;
-	color: gray;
-}
-
-.w-limmiter {
-	max-width: 1000px;
-}
-
-.center-text {
-	text-align: center;
-}
-
-.big-title {
-	font-size: 4.5rem;
-}
-
-
-#content {
-	width: 80%;
-	margin: auto;
-	padding-top: 80px;
-}
+@import "common.css" screen;
+@import "article.css" screen;
 
 #topPanel {
 	position: absolute;
@@ -134,51 +80,6 @@ a:hover {
 	
 }
 
-.article-block {
-}
-
-.article-block .title {
-	font-size: 1.3rem;
-}
-
-.article-block .content {
-	max-height: 400px;
-	margin: 20px 0 5px 0;
-	overflow: hidden;
-}
-
-.comment-block {
-	position: relative;
-	width: 70%;
-	min-width: 400px;
-	padding: 15px;
-}
-
-.comment-block:hover {
-	background: rgba(0,0,50,0.1);
-}
-
-.comment-block .title {
-	font-size: 1.3rem;
-}
-
-.comment-block .text {
-	margin: 20px 0 5px 0;
-}
-
-.comment-block .edit-btn {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	width: 50px;
-	height: 50px;
-	background: gray;
-}
-
-.comment-block .time {
-	font-size: 0.6rem;
-	color: gray;
-}
 
 #adminPanelEnter {
 	width: 200px;

@@ -1,3 +1,4 @@
 # MVC-Framework
 
-<img src="https://snap-photos.s3.amazonaws.com/img-thumbs/960w/C8K19BYLLW.jpg">
+<img src="https://pp.vk.me/c629329/v629329054/103ab/8w6ofvsnjlk.jpg">
+<img src="https://pp.vk.me/c629329/v629329054/103a3/mADSJpD5g0c.jpg">

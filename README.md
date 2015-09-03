@@ -1,7 +1,10 @@
-# MVC-Framework
+## Home page
+<img src="https://pp.vk.me/c629329/v629329054/108ef/OybJy1UF-IM.jpg">
+
+
+## Articles
+<img src="https://pp.vk.me/c629329/v629329054/108e6/zwE5JZNJOsM.jpg">
+
 
 ## Admin panel
-<img src="https://pp.vk.me/c629329/v629329054/103ab/8w6ofvsnjlk.jpg">
-
-## Home page
-<img src="https://pp.vk.me/c629329/v629329054/103a3/mADSJpD5g0c.jpg">
+<img src="https://pp.vk.me/c629329/v629329054/108dd/3jLBV8I4WIE.jpg">

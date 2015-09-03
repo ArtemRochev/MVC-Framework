@@ -1,0 +1,48 @@
+body, ul, li, h1, h2, h3, .menu {
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+    font-family: 'Play', sans-serif;
+}
+
+aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    list-style: none;
+    z-index: 100;
+    background: rgb(44, 54, 63);
+}
+
+aside h3 {
+    color: white;
+}
+
+.menu {
+    margin-top: 30px;
+}
+
+.menu li {
+    width: 100%;
+    background: rgb(100,100,100);
+}
+
+.menu li:hover {
+    background: rgb(60,60,60);
+}
+
+.menu li a {
+    display: block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+}
+
+#content {
+    margin-left: 250px;
+    padding: 20px;
+}

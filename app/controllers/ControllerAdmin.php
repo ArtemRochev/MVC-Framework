@@ -13,7 +13,8 @@ class ControllerAdmin extends Controller {
 	
 	function actionShowPanel() {
 		$this->view->render(
-			'adminLayout'
+			'adminLayout',
+			'admin/index'
 		);
 	}
 

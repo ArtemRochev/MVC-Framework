@@ -7,4 +7,4 @@
 
 
 ## Admin panel
-<img src="https://pp.vk.me/c629329/v629329054/108e6/zwE5JZNJOsM.jpg">
+<img src="https://pp.vk.me/c629329/v629329054/108dd/3jLBV8I4WIE.jpg">

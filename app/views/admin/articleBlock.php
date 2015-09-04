@@ -7,7 +7,9 @@
 
 	<form method="post" action="/admin?a=delete-article">
 		<input type="hidden" name="id" value="%s">
-		<button type="submit" class="delete-btn article-control-btn">Удалить</button>
-		<button type="submit" class="modify-btn article-control-btn">Изменить</button>
+		<ul class="button-panel">
+			<button type="submit" class="red-btn button">Удалить</button>
+			<button type="submit" class="blue-btn button">Изменить</button>
+		</ul>
 	</form>
 </div>

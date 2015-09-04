@@ -20,7 +20,7 @@ class Article extends Model {
 
 	public function checkRequiredColumns($params) {
 		foreach ( $this->requiredColumns as $column ) {
-			if ( !isset($param[$column]) ) {
+			if ( empty($params[$column]) ) {
 				return false;
 			}
 		}

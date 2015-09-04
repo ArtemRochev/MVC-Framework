@@ -22,9 +22,9 @@
 		</ul>
 	</aside>
 
-	<div id="content">
+	<div id="content" class="w-limmiter">
 		<?php
-			include VIEWS_PATH . $contentView;
+			include $view;
 		?>
 	</div>
 </body>

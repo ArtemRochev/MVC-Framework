@@ -3,7 +3,7 @@
 require_once(CORE_PATH . 'tools/Text.php');
 
 foreach ( $data as $article ) {
-    echo sprintf(file_get_contents(VIEWS_PATH . 'articleBlock.php'),
+    echo sprintf(file_get_contents(VIEWS_PATH . 'user/articleBlock.php'),
         $article->id,
         $article->title,
         $article->img_preview_url,

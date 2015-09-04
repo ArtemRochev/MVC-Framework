@@ -1,9 +1,14 @@
 <?php
 
 class View {
-	function render($viewName, $contentView = 'main', $data = null) {
-		$contentView .= PHP_EXT;
+	public function render($view = 'index', $data = null, $theme = 'user', $layout = 'main') {
+		if ( $theme == 'admin' ) {
+			$layout = 'admin';
+		}
 
-		include(VIEWS_PATH . 'layout/' . $viewName . PHP_EXT);
+		$view 	= VIEWS_PATH . $theme . '/' . $view . PHP_EXT;
+		$layout = VIEWS_PATH . 'layout/' . $layout . PHP_EXT;
+
+		include($layout);
 	}
 }

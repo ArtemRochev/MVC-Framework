@@ -3,9 +3,8 @@
 
 .article-block {
     position: relative;
-    width: 70%;
     min-width: 400px;
-    margin-bottom: 20px;
+    margin-top: 20px;
     padding: 15px;
     overflow: hidden;
     box-shadow: 1px 1px 5px 1px gray;
@@ -19,12 +18,12 @@
 .article-block img {
     padding-right: 15px;
     max-width: 200px;
+    max-height: 80px;
     float: left;
 }
 
 .article-block .content {
     max-height: 80px;
-    margin: 20px 0 0 0;
     overflow: hidden;
 }
 
@@ -33,33 +32,22 @@
     color: gray;
 }
 
-.article-block .article-control-btn {
-    position: absolute;
-    right: 15px;
-    width: 90px;
-    height: 30px;
-    text-align: center;
-    cursor: pointer;
-    color: lightgoldenrodyellow;
-    border-radius: 5px;
-    border: none;
-}
 
-.article-block .delete-btn {
+.article-block .red-btn {
     top: 15px;
     background: lightcoral;
 }
 
-.article-block .delete-btn:hover {
+.article-block .red-btn:hover {
     background: rgb(234, 93, 93);
 }
 
-.article-block .modify-btn {
+.article-block .blue-btn {
     top: 50px;
     background: lightskyblue;
 }
 
-.article-block .modify-btn:hover {
+.article-block .blue-btn:hover {
     background: rgb(68, 160, 190);
 }
 

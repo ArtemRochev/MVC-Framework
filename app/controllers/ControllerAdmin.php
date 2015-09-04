@@ -13,16 +13,17 @@ class ControllerAdmin extends Controller {
 	
 	function actionShowPanel() {
 		$this->view->render(
-			'adminLayout',
-			'admin/index'
+			'index',
+			'',
+			'admin'
 		);
 	}
 
 	function actionShowArticles() {
 		$this->view->render(
-			'adminLayout',
-			'admin/articles',
-			Article::getArticles()
+			'articles',
+			Article::getArticles(),
+			'admin'
 		);
 	}
 
@@ -36,8 +37,10 @@ class ControllerAdmin extends Controller {
 	
 	function actionShowLoginPanel() {
 		$this->view->render(
-			'emptyLayout',
-			'authPanel'
+			'authPanel',
+			'',
+			'user',
+			'empty'
 		);
 	}
 	
@@ -53,9 +56,13 @@ class ControllerAdmin extends Controller {
 		}
 	}
 
+	public function actionModifyArticle() {
+		$this->view->render('adminLayout', 'modifyArticle');
+
+		//ControllerArticle::saveArticle($_POST);
+	}
+
 	public function actionSaveArticle() {
-		//var_dump($_POST);
-		//die();
 		ControllerArticle::saveArticle($_POST);
 	}
 

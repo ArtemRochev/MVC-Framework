@@ -11,7 +11,6 @@ class ControllerArticle extends Controller {
 	
 	public function actionIndex() {
 		$this->view->render(
-			'mainLayout',
 			'articles',
 			Article::getArticles()
 		);

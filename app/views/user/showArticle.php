@@ -43,6 +43,6 @@
         <textarea rows="3" name="text" required></textarea>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-success">Отправить</button>
+        <button type="submit" class="btn">Отправить</button>
     </div>
 </form>

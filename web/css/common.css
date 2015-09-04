@@ -53,6 +53,61 @@ form textarea {
 
 .big-title {
     font-size: 4.5rem;
+    line-height: 60px;
+}
+
+
+.btn {
+    padding: 5px 15px;
+    line-height: normal;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    background: lightslategrey;
+}
+
+.btn:hover {
+    background: rgb(44, 54, 63);
+}
+
+.button-panel {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    list-style: none;
+    text-align: right;
+}
+
+.button-panel li {
+    margin-bottom: 10px;
+}
+
+.btn-red {
+    top: 15px;
+    background: lightcoral;
+}
+
+.btn-red:hover {
+    background: rgb(187, 88, 88);
+}
+
+.btn-blue {
+    top: 50px;
+    background: rgb(67, 124, 160);
+}
+
+.btn-blue:hover {
+    background: rgb(59, 100, 126);
+}
+
+.btn-green {
+    background: rgb(94, 194, 94);
+}
+
+.btn-green:hover {
+    background: rgb(69, 165, 69);
 }
 
 #content {

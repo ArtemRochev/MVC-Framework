@@ -89,9 +89,12 @@ class Router {
 		$modelName = 'Model' . $controllerName;
 		$controllerName = 'Controller' . $controllerName;
 
-		//echo "Controller: $controllerName <br>";
-		//echo "Action: $actionName <br>";
-		//echo "Model: $modelName <br>";
+		if ( !empty($_GET['debug']) ) {
+			echo "Controller: $controllerName <br>";
+			echo "Action: $actionName <br>";
+			echo "Model: $modelName <br>";
+			//die();
+		}
 
 		$this->includeController($controllerName);
 		$this->includeModel($modelName);

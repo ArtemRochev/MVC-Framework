@@ -14,6 +14,6 @@ abstract class Controller {
 
 	public static function redirectTo404($route = '') {
 		header("HTTP/1.0 404 Not Found");
-		header('Location: 404?route=' . $route);
+		header('Location: /404?route=' . $route);
 	}
 }

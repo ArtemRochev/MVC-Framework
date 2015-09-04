@@ -12,7 +12,7 @@ class ControllerArticle extends Controller {
 	public function actionIndex() {
 		$this->view->render(
 			'articles',
-			Article::getArticles()
+			Article::all()
 		);
 	}
 	
@@ -21,15 +21,17 @@ class ControllerArticle extends Controller {
 			return Controller::redirectTo404($_SERVER['REQUEST_URI']);
 		}
 
-		if ( $article = Article::getArticle($_GET['id']) ) {
-			return $this->view->render('mainLayout', 'showArticle', [
-				'article' => $article,
-				'commentsCount' => count(Comment::getComments()),
-				'comments' => Comment::getComments()
-			]);
+		if ( !$article = Article::findOne($_GET['id']) ) {
+			return Controller::redirectTo404($_SERVER['REQUEST_URI']);
 		}
 
-		return Controller::redirectTo404($_SERVER['REQUEST_URI']);
+		$comments = $article->getComments();
+
+		return $this->view->render('showArticle', [
+			'article' => $article,
+			'commentsCount' => count($comments),
+			'comments' => $comments
+		]);
 	}
 
 	public static function saveArticle($params) {
@@ -43,8 +45,6 @@ class ControllerArticle extends Controller {
 
 			$article->save();
 		}
-
-		return Controller::redirect('/admin/show-articles');
 	}
 
 	public static function deleteArticle($id) {
@@ -52,7 +52,5 @@ class ControllerArticle extends Controller {
 			$article = new Article($id);
 			$article->delete();
 		}
-
-		return Controller::redirect('/admin/show-articles');
 	}
 }

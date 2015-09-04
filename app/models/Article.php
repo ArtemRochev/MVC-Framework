@@ -5,17 +5,12 @@ require_once(CORE_PATH . 'base/Model.php');
 class Article extends Model {
 	protected $columns = ['title', 'content', 'img_preview_url', 'created'];
 	protected $parent = 'author';
+	protected $childrens = ['comment'];
 
 	private $requiredColumns = ['title', 'content'];
 
-	public static function getArticles() {
-		return Article::all();
-	}
-
-	public static function getArticle($id = null) {
-		if ( $id ) {
-			return Article::findOne($id);
-		}
+	public function getComments() {
+		return Comment::allWhere('article_id', $this->id);
 	}
 
 	public function checkRequiredColumns($params) {

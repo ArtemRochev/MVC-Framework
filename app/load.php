@@ -34,5 +34,5 @@ $router = new Router;
 try {
 	$router->startRouting();
 } catch (NotFoundException $e) {
-	Controller::redirectTo404();
+	Controller::redirectTo404($_SERVER['REQUEST_URI']);
 }

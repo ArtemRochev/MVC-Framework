@@ -4,8 +4,8 @@ class DatabaseRecord {
     private static $deleteQuery = 'DELETE FROM `%1$s` WHERE id=?';
     private static $insertQuery = 'INSERT INTO `%1$s` (%2$s) VALUES (%3$s)';
     private static $listQuery   = 'SELECT * FROM `%s`';
+    private static $listByFieldQuery = 'SELECT * FROM `%1$s` WHERE %2$s=?';
     private static $selectQuery = 'SELECT * FROM `%1$s` WHERE id=?';
-    private static $selectByFieldQuery = 'SELECT * FROM `%1$s` WHERE %2$s=?';
     private static $updateQuery = 'UPDATE `%1$s` SET %2$s WHERE id=?';
     private static $lastIdQuery = 'SELECT LAST_INSERT_ID()';
     private static $existQuery = 'SELECT EXISTS(SELECT * FROM %1$s WHERE %2$s=?) as isExist';
@@ -37,7 +37,10 @@ class DatabaseRecord {
         $this->load();
 
         if ( $name == $this->parent ) {
-            return $this->getParent($this->parent);
+            return $this->getParent($name);
+        }
+        if ( in_array($name, $this->childrens) ) {
+            return $this->getChildren($name);
         }
         
         return $this->getColumn($name);
@@ -59,6 +62,9 @@ class DatabaseRecord {
     }
 
     public function getColumn($name) {
+        if ( $name == 'id' ) {
+            return $this->id;
+        }
         if ( $name == $this->parent ) {
 
             if ( isset($this->fields[$name . '_id']) ) {
@@ -74,10 +80,14 @@ class DatabaseRecord {
     public function getParent($name) {
         return new User($this->getColumn($name));
     }
-    
+
+    public function getChildren($name) {
+        $type = ucfirst($name);
+
+        return new $type;
+    }
+
     public function save() {
-        //var_dump($this->id);
-        //die();
         if ( $this->modified ) {
             if ( $this->id == NULL ) {
                 $this->insert();
@@ -96,10 +106,6 @@ class DatabaseRecord {
     
     public static function checkExists($table, $field, $value) {
         return self::execute(sprintf(self::$existQuery, $table, $field), array($value));
-    }
-    
-    public static function getRecordDataByField($table, $field, $value) {
-        return self::execute(sprintf(self::$selectByFieldQuery, $table, $field), array($value));
     }
 
     public static function findOne($id = null) {
@@ -126,6 +132,7 @@ class DatabaseRecord {
             
         for ( $i = 0; $i < $rowCount; $i++ ) {
             $obj = new $type;
+            $obj->id = $list[$i]['id'];
             $obj->fields = $list[$i];
             $obj->loaded = true;
             $obj->table = $table;
@@ -133,6 +140,30 @@ class DatabaseRecord {
             $objList[] = $obj;
         }
         
+        return $objList;
+    }
+
+    public static function allWhere($field, $value) {
+        self::initDatabase();
+
+        $type = get_called_class();
+        $table = strtolower($type);
+        $objList = [];
+        $rowCount;
+
+        $list = self::execute(sprintf(self::$listByFieldQuery, $table, $field), [$value], 'list');
+
+        $rowCount = count($list);
+
+        for ( $i = 0; $i < $rowCount; $i++ ) {
+            $obj = new $type;
+            $obj->fields = $list[$i];
+            $obj->loaded = true;
+            $obj->table = $table;
+
+            $objList[] = $obj;
+        }
+
         return $objList;
     }
 
@@ -154,7 +185,7 @@ class DatabaseRecord {
         self::execute(sprintf(self::$charsetQuery, $encording), array(), false);
     }
     
-    private function execute($query, $args, $isReturningData = true) {
+    private function execute($query, $args, $returningData = 'single') {
         $query = self::$db->prepare($query);
         //var_dump($query);
         //die();
@@ -164,8 +195,10 @@ class DatabaseRecord {
             echo $e->getMessage() . "\n";
         }
         
-        if ( $isReturningData ) {
+        if ( $returningData == 'single' ) {
             return $query->fetch(PDO::FETCH_ASSOC);
+        } else if ( $returningData == 'list' ) {
+            return $query->fetchAll(PDO::FETCH_ASSOC);
         }
     }
 

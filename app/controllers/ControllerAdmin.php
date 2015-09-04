@@ -22,7 +22,7 @@ class ControllerAdmin extends Controller {
 	function actionShowArticles() {
 		$this->view->render(
 			'articles',
-			Article::getArticles(),
+			Article::all(),
 			'admin'
 		);
 	}
@@ -64,10 +64,13 @@ class ControllerAdmin extends Controller {
 
 	public function actionSaveArticle() {
 		ControllerArticle::saveArticle($_POST);
+
+		return Controller::redirect('/admin/show-articles');
 	}
 
 	public function actionDeleteArticle() {
-		//die('g');
 		ControllerArticle::deleteArticle($_POST['id']);
+
+		return Controller::redirect('/admin/show-articles');
 	}
 }

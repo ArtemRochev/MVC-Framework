@@ -36,7 +36,7 @@ class ControllerArticle extends Controller {
 		$article = new Article;
 
 		if ( $article->checkRequiredColumns($params) ) {
-			$article->author_id = $params['author_id'];
+			$article->author_id = 1;
 			$article->title = $params['title'];
 			$article->content = $params['content'];
 			$article->img_preview_url = $params['img_preview_url'];
@@ -44,6 +44,15 @@ class ControllerArticle extends Controller {
 			$article->save();
 		}
 
-		return Controller::redirect('/admin?a=show-articles');
+		return Controller::redirect('/admin/show-articles');
+	}
+
+	public static function deleteArticle($id) {
+		if ( isset($id) ) {
+			$article = new Article($id);
+			$article->delete();
+		}
+
+		return Controller::redirect('/admin/show-articles');
 	}
 }

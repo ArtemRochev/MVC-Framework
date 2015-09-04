@@ -5,11 +5,11 @@
 	<img src="%s" alt="">
 	<p class="content">%s</p>
 
-	<form method="post" action="/admin?a=delete-article">
+	<form method="post" action="/admin/delete-article">
 		<input type="hidden" name="id" value="%s">
 		<ul class="button-panel">
-			<button type="submit" class="red-btn button">Удалить</button>
-			<button type="submit" class="blue-btn button">Изменить</button>
+			<li><button type="submit" class="btn btn-red">Удалить</button></li>
+			<li><button type="submit" class="btn btn-blue">Изменить</button></li>
 		</ul>
 	</form>
 </div>

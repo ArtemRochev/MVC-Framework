@@ -16,7 +16,7 @@
 
 <div id="content">
 	<?php
-		include PROJ_PATH . 'app/views/' . $view;
+		include $view;
 	?>
 </div>
 </body>

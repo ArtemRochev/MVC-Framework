@@ -37,8 +37,8 @@ class Router {
 	}
 
 	function getActionName($routesData) {
-		if ( isset($routesData['a']) ) {
-			$action = ucfirst($routesData['a']);
+		if ( isset($routesData[2]) ) {
+			$action = ucfirst($routesData[2]);
 			$valueLen = strlen($action);
 
 			for ( $i = 0; $i < $valueLen; $i++ ) {
@@ -60,7 +60,7 @@ class Router {
 			throw new NotFoundException;
 		}
 
-		include($controllerPath);
+		require_once($controllerPath);
 	}
 
 	function includeModel($name) {
@@ -79,18 +79,19 @@ class Router {
 		$controller;
 		$routesData = $this->parseRoute();
 
+		//var_dump($routesData);
+		//die();
+
 		$controllerName = $this->getControllerName($routesData['routes']);
-		$actionName = $this->getActionName($routesData['params']);
+		$actionName = $this->getActionName($routesData['routes']);
 		$modelName = $controllerName;
 
 		$modelName = 'Model' . $controllerName;
 		$controllerName = 'Controller' . $controllerName;
 
-//		echo "Controller: $controllerName <br>";
-//		echo "Action: $actionName <br>";
-//		echo "Model: $modelName <br>";
-
-		//die();
+		//echo "Controller: $controllerName <br>";
+		//echo "Action: $actionName <br>";
+		//echo "Model: $modelName <br>";
 
 		$this->includeController($controllerName);
 		$this->includeModel($modelName);

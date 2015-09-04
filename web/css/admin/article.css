@@ -1,0 +1,56 @@
+.article-block {
+    position: relative;
+    min-width: 400px;
+    margin-top: 20px;
+    padding: 15px;
+    overflow: hidden;
+    box-shadow: 1px 1px 5px 1px gray;
+}
+
+.article-block .title {
+    padding-right: 110px;
+    font-size: 1.3rem;
+}
+
+.article-block img {
+    padding-right: 15px;
+    max-width: 200px;
+    max-height: 80px;
+    float: left;
+}
+
+.article-block .content {
+    max-height: 80px;
+    overflow: hidden;
+}
+
+.article-block .time {
+    font-size: 0.6rem;
+    color: gray;
+}
+
+#addArticle input, #addArticle textarea {
+    width: 90%;
+    max-width: 600px;
+}
+
+#addArticle input.success {
+    border: 1px solid lightgreen;
+}
+
+#addArticle input.fail {
+    border: 1px solid lightcoral;
+}
+
+#addArticle textarea {
+    height: 300px;
+}
+
+#addArticle .img-preview {
+    max-width: 600px;
+    max-height: 250px;
+}
+
+.hidden {
+    display: none;
+}

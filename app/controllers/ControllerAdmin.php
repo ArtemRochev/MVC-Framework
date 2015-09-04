@@ -47,17 +47,17 @@ class ControllerAdmin extends Controller {
 	function checkAuth() {
 		isset($_POST['password'])
 			? $pass = $_POST['password']
-			: $pass = "";
+			: $pass = '';
 
-		if ( $pass == '123' ) {
-			return Controller::redirect('admin?a=show-panel');
+		if ( $pass === '123' ) {
+			return Controller::redirect('admin/show-panel');
 		} else {
-			return Controller::redirect('admin?a=show-login-panel');
+			return Controller::redirect('admin/show-login-panel');
 		}
 	}
 
 	public function actionModifyArticle() {
-		$this->view->render('adminLayout', 'modifyArticle');
+		$this->view->render('modifyArticle', '', 'admin');
 
 		//ControllerArticle::saveArticle($_POST);
 	}
@@ -67,9 +67,7 @@ class ControllerAdmin extends Controller {
 	}
 
 	public function actionDeleteArticle() {
-		$article = new Article($_POST['id']);
-		$article->delete();
-
-		return Controller::redirect('/admin?a=show-articles');
+		//die('g');
+		ControllerArticle::deleteArticle($_POST['id']);
 	}
 }

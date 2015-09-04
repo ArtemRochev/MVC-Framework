@@ -88,8 +88,8 @@ class DatabaseRecord {
     }
 
     public function save() {
-        if ( $this->modified ) {
-            if ( $this->id == NULL ) {
+       if ( $this->modified || !$this->id ) {
+            if ( !$this->id ) {
                 $this->insert();
             } else {
                 $this->update();
@@ -120,23 +120,22 @@ class DatabaseRecord {
     
     public static function all() {
         self::initDatabase();
-        
+
         $type = get_called_class();
         $table = strtolower($type);
         $objList = [];
         $rowCount;
-        
-        $list = self::$db->query(sprintf(self::$listQuery, $table));
-        $list = $list->fetchAll(PDO::FETCH_ASSOC);
+
+        $list = self::execute(sprintf(self::$listQuery, $table), [], 'list');
         $rowCount = count($list);
-            
+
         for ( $i = 0; $i < $rowCount; $i++ ) {
             $obj = new $type;
             $obj->id = $list[$i]['id'];
             $obj->fields = $list[$i];
             $obj->loaded = true;
             $obj->table = $table;
-            
+
             $objList[] = $obj;
         }
         
@@ -165,6 +164,10 @@ class DatabaseRecord {
         }
 
         return $objList;
+    }
+
+    private function getObjectList() {
+
     }
 
     public static function setDatabase(PDO $db) {

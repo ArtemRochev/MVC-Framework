@@ -1,15 +1,29 @@
 <div class="article-block">
-	<p class="title">%s</p>
-	<p class="author">Автор: %s</p>
-	<p class="time">%s</p>
-	<img src="%s" alt="">
-	<p class="content">%s</p>
+	<p class="title">
+		<?= $data['article']->title ?>
+	</p>
 
-	<form method="post" action="/admin/delete-article">
-		<input type="hidden" name="id" value="%s">
-		<ul class="button-panel">
-			<li><button type="submit" class="btn btn-red">Удалить</button></li>
-			<li><button type="submit" class="btn btn-blue">Изменить</button></li>
-		</ul>
+	<p class="author">
+		Автор: <?= $data['article']->author->name ?>
+	</p>
+
+	<p class="time">
+		<?= $data['article']->created ?>
+	</p>
+
+	<img src="<?= $data['article']->img_preview_url ?>" alt="">
+
+	<p class="content">
+		<?= $data['article']->content ?>
+	</p>
+
+	<ul class="button-panel">
+		<li>
+			<a href="<?= Url::to('admin/delete-article', ['id' => $data['article']->id]) ?>" class="btn btn-red">Удалить</a>
+		</li>
+		<li>
+			<a href="<?= Url::to('admin/modify-article', ['id' => $data['article']->id]) ?>" class="btn btn-blue">Изменить</a>
+		</li>
+	</ul>
 	</form>
 </div>

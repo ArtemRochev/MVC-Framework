@@ -56,12 +56,6 @@ class ControllerAdmin extends Controller {
 		}
 	}
 
-	public function actionModifyArticle() {
-		$this->view->render('modifyArticle', '', 'admin');
-
-		//ControllerArticle::saveArticle($_POST);
-	}
-
 	public function actionSaveArticle() {
 		ControllerArticle::saveArticle($_POST);
 
@@ -69,8 +63,25 @@ class ControllerAdmin extends Controller {
 	}
 
 	public function actionDeleteArticle() {
-		ControllerArticle::deleteArticle($_POST['id']);
+		ControllerArticle::deleteArticle($_GET['id']);
 
 		return Controller::redirect('/admin/show-articles');
+	}
+
+	public function actionModifyArticle() {
+		$article;
+
+		if ( isset($_GET['id']) ) {
+			$article = Article::findOne($_GET['id']);
+		} else {
+			$article = new Article; //fix
+			$article->title = '';
+			$article->content = '';
+			$article->img_preview_url = '';
+			$article->author_id = 1;
+			$article->save();
+		}
+
+		$this->view->render('modifyArticle', ['article' => $article], 'admin');
 	}
 }

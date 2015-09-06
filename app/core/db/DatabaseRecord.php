@@ -1,14 +1,14 @@
 <?php
 
 class DatabaseRecord {
-    private static $deleteQuery = 'DELETE FROM `%1$s` WHERE id=?';
+    private static $deleteQuery = 'DELETE FROM `%s` WHERE id=?';
     private static $insertQuery = 'INSERT INTO `%1$s` (%2$s) VALUES (%3$s)';
-    private static $listQuery   = 'SELECT * FROM `%s`';
-    private static $listByFieldQuery = 'SELECT * FROM `%1$s` WHERE %2$s=?';
-    private static $selectQuery = 'SELECT * FROM `%1$s` WHERE id=?';
+    private static $listQuery   = 'SELECT %s FROM `%s`';
+    private static $selectQuery = 'SELECT * FROM `%s` WHERE id=?';
     private static $updateQuery = 'UPDATE `%1$s` SET %2$s WHERE id=?';
     private static $lastIdQuery = 'SELECT LAST_INSERT_ID()';
     private static $existQuery = 'SELECT EXISTS(SELECT * FROM %1$s WHERE %2$s=?) as isExist';
+    private static $countQuery = 'SELECT count(*) as count FROM `%s`'; // fix - merge with other query
     private static $charsetQuery = 'SET NAMES %1$s';
     
     private static $defaultEncording = 'utf8';
@@ -118,15 +118,21 @@ class DatabaseRecord {
         return new $type($id);
     }
     
-    public static function all() {
+    public static function all($where = [], $columns = '*') {
         self::initDatabase();
-
         $type = get_called_class();
         $table = strtolower($type);
+        $query = sprintf(self::$listQuery, $columns, $table);
+        $whereCount = count($where);
+        $whereValues = [];
         $objList = [];
         $rowCount;
 
-        $list = self::execute(sprintf(self::$listQuery, $table), [], 'list');
+        if ( $whereCount ) {
+            $query .= self::buildWherePartQuery($where, $whereValues);
+        }
+
+        $list = self::execute($query, $whereValues, 'list');
         $rowCount = count($list);
 
         for ( $i = 0; $i < $rowCount; $i++ ) {
@@ -142,32 +148,15 @@ class DatabaseRecord {
         return $objList;
     }
 
-    public static function allWhere($field, $value) {
-        self::initDatabase();
+    private static function buildWherePartQuery($params, &$whereValues = []) {
+        $where = ' WHERE';
 
-        $type = get_called_class();
-        $table = strtolower($type);
-        $objList = [];
-        $rowCount;
-
-        $list = self::execute(sprintf(self::$listByFieldQuery, $table, $field), [$value], 'list');
-
-        $rowCount = count($list);
-
-        for ( $i = 0; $i < $rowCount; $i++ ) {
-            $obj = new $type;
-            $obj->fields = $list[$i];
-            $obj->loaded = true;
-            $obj->table = $table;
-
-            $objList[] = $obj;
+        foreach ($params as $column => $value) {
+            $where .= ' ' . $column . '=? AND';
+            $whereValues[] = $value;
         }
 
-        return $objList;
-    }
-
-    private function getObjectList() {
-
+        return rtrim($where, 'AND'); //fix
     }
 
     public static function setDatabase(PDO $db) {
@@ -188,10 +177,9 @@ class DatabaseRecord {
         self::execute(sprintf(self::$charsetQuery, $encording), array(), false);
     }
     
-    private function execute($query, $args, $returningData = 'single') {
+    private function execute($query, $args = [], $returningData = 'single') {
         $query = self::$db->prepare($query);
-        //var_dump($query);
-        //die();
+
         try {
             $query->execute($args);
         } catch (PDOException $e) {
@@ -223,9 +211,18 @@ class DatabaseRecord {
             $valuesStr
         );
         
-        $this->execute($query, array(), false);
-        $this->id = $this->execute(self::$lastIdQuery, array())['LAST_INSERT_ID()'];
+        $this->execute($query);
+        $this->id = $this->execute(self::$lastIdQuery, [], 'single');
         $this->loaded = true;
+    }
+
+    public function getCount($params) { // fix
+        $query = sprintf(self::$countQuery, 'comment');
+        $paramValues = [];
+
+        $query .= $this->buildWherePartQuery($params, $paramValues);
+
+        return self::execute($query, $paramValues, 'single')['count'];
     }
 
     private function load() {
@@ -233,7 +230,7 @@ class DatabaseRecord {
             return false;
         }
 
-        $row = $this->execute(sprintf(self::$selectQuery, $this->table), array($this->id));
+        $row = $this->execute(sprintf(self::$selectQuery, $this->table), [$this->id]);
 
         foreach ($this->columns as $column) {
             $this->fields[$column] = $row[$column];

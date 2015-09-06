@@ -8,6 +8,6 @@ class Url {
             $url .= $key . '=' . $value . '&';
         }
 
-        return trim($url, '&');
+        return trim($url, '&?');
     }
 }

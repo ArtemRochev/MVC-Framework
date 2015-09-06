@@ -31,18 +31,15 @@
 </div>
 
 
-<form id="addComment" role="form" method="post" action="/article?a=save-comment">
+<form id="addComment" role="form" method="post" action="<?= Url::to('article/save-comment') ?>">
     <h3>Написать коментарий</h3>
 
-    <div class="form-group">
-        <label>Ид автора</label>
-        <input type="text" value="1" name="author_id" required>
-    </div>
-    <div class="form-group">
-        <label>Текст</label>
-        <textarea rows="3" name="text" required></textarea>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn">Отправить</button>
-    </div>
+    <label>Ид автора</label>
+    <input type="text" value="1" name="author_id" required>
+
+    <label>Текст</label>
+    <textarea rows="5" name="text" required></textarea>
+
+    <input type="hidden" name="article_id" value="<?= $data['article']->id ?>">
+    <button type="submit" class="btn">Отправить</button>
 </form>

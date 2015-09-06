@@ -29,6 +29,13 @@
     color: gray;
 }
 
+.article-block .info-small {
+    margin: 0;
+    line-height: normal;
+    font-size: 0.6rem;
+    color: darkgray;
+}
+
 #addArticle input, #addArticle textarea {
     width: 90%;
     max-width: 700px;

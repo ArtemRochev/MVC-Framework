@@ -10,7 +10,9 @@ class Article extends Model {
 	private $requiredColumns = ['title', 'content'];
 
 	public function getComments() {
-		return Comment::allWhere('article_id', $this->id);
+		return Comment::all([
+			'article_id' => $this->id
+		]);
 	}
 
 	public function checkRequiredColumns($params) {
@@ -21,5 +23,9 @@ class Article extends Model {
 		}
 
 		return true;
+	}
+
+	public function getCommentCount() {
+		return Article::getCount(['article_id' => $this->id]);
 	}
 }

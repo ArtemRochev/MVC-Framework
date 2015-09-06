@@ -34,6 +34,21 @@ class ControllerArticle extends Controller {
 		]);
 	}
 
+	public function actionSaveComment() {
+		if ( !isset($_POST['article_id']) ) {
+			return $this->redirect('/article');
+		}
+
+		$comment = new Comment();
+
+		$comment->author_id = $_POST['author_id'];
+		$comment->article_id = $_POST['article_id'];
+		$comment->text = $_POST['text'];
+		$comment->save();
+
+		$this->redirect(Url::to('/article/show-article', ['id' => $_POST['article_id']]));
+	}
+
 	public static function saveArticle($params) {
 		$article = new Article;
 

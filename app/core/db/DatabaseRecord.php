@@ -118,21 +118,21 @@ class DatabaseRecord {
         return new $type($id);
     }
     
-    public static function all($where = [], $columns = '*') {
+    public static function all($where = []) {
         self::initDatabase();
         $type = get_called_class();
         $table = strtolower($type);
-        $query = sprintf(self::$selectQuery, $columns, $table);
+        $query = self::buildSelectQuery($table);
         $whereCount = count($where);
-        $whereValues = [];
+        $queryArgs = [];
         $objList = [];
         $rowCount;
 
         if ( $whereCount ) {
-            $query .= self::buildWherePartQuery($where, $whereValues);
+            $query .= self::buildWherePartQuery($where, $queryArgs);
         }
 
-        $list = self::execute($query, $whereValues, 'list');
+        $list = self::execute($query, $queryArgs, 'list');
         $rowCount = count($list);
 
         for ( $i = 0; $i < $rowCount; $i++ ) {
@@ -146,6 +146,10 @@ class DatabaseRecord {
         }
         
         return $objList;
+    }
+
+    private static function buildSelectQuery($from, $select = '*') {
+        return sprintf(self::$selectQuery, $select, $from);
     }
 
     private static function buildWherePartQuery($params, &$whereValues = []) {

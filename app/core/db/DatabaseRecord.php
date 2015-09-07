@@ -87,6 +87,17 @@ class DatabaseRecord {
         return new $type;
     }
 
+    public function getCount($table = '', $where = []) { // fix
+        if ( $table == '' ) {
+            $table = $this->table;
+        }
+
+        $queryArgs = [];
+        $query = self::buildSelectQuery($table, 'count(*) as count', $where, $queryArgs);
+
+        return self::execute($query, $queryArgs, 'single')['count'];
+    }
+
     public function save() {
        if ( $this->modified || !$this->id ) {
             if ( !$this->id ) {
@@ -122,15 +133,10 @@ class DatabaseRecord {
         self::initDatabase();
         $type = get_called_class();
         $table = strtolower($type);
-        $query = self::buildSelectQuery($table);
-        $whereCount = count($where);
         $queryArgs = [];
         $objList = [];
         $rowCount;
-
-        if ( $whereCount ) {
-            $query .= self::buildWherePartQuery($where, $queryArgs);
-        }
+        $query = self::buildSelectQuery($table, '*', $where, $queryArgs);
 
         $list = self::execute($query, $queryArgs, 'list');
         $rowCount = count($list);
@@ -148,8 +154,12 @@ class DatabaseRecord {
         return $objList;
     }
 
-    private static function buildSelectQuery($from, $select = '*') {
-        return sprintf(self::$selectQuery, $select, $from);
+    private static function buildSelectQuery($from, $select = '*', $where = [], &$args = []) {
+        if ( empty($where) ) {
+            return sprintf(self::$selectQuery, $select, $from);
+        }
+
+        return sprintf(self::$selectQuery, $select, $from) . self::buildWherePartQuery($where, $args);
     }
 
     private static function buildWherePartQuery($params, &$whereValues = []) {
@@ -218,19 +228,6 @@ class DatabaseRecord {
         $this->execute($query);
         $this->id = $this->execute(self::$lastIdQuery, [], 'single');
         $this->loaded = true;
-    }
-
-    public function getCount($table = '', $where = false) { // fix
-        if ( $table == '' ) {
-            $table = $this->table;
-        }
-
-        $query = sprintf(self::$countQuery, 'comment');
-        $queryArgs = [];
-
-        $query .= $this->buildWherePartQuery($where, $queryArgs);
-
-        return self::execute($query, $queryArgs, 'single')['count'];
     }
 
     private function load() {

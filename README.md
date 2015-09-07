@@ -8,3 +8,6 @@
 
 ## Admin panel
 <img src="https://pp.vk.me/c629329/v629329054/11261/XlOcGd-K9UE.jpg">
+
+## Modify article
+<img src="https://pp.vk.me/c629329/v629329054/1126a/JBDSLr8sOtk.jpg">

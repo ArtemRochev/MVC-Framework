@@ -3,8 +3,8 @@
 class DatabaseRecord {
     private static $deleteQuery = 'DELETE FROM `%s` WHERE id=?';
     private static $insertQuery = 'INSERT INTO `%1$s` (%2$s) VALUES (%3$s)';
-    private static $listQuery   = 'SELECT %s FROM `%s`';
-    private static $selectQuery = 'SELECT * FROM `%s` WHERE id=?';
+    private static $selectQuery   = 'SELECT %s FROM `%s`';
+    private static $selectByIdQuery = 'SELECT * FROM `%s` WHERE id=?';
     private static $updateQuery = 'UPDATE `%1$s` SET %2$s WHERE id=?';
     private static $lastIdQuery = 'SELECT LAST_INSERT_ID()';
     private static $existQuery = 'SELECT EXISTS(SELECT * FROM %1$s WHERE %2$s=?) as isExist';
@@ -122,7 +122,7 @@ class DatabaseRecord {
         self::initDatabase();
         $type = get_called_class();
         $table = strtolower($type);
-        $query = sprintf(self::$listQuery, $columns, $table);
+        $query = sprintf(self::$selectQuery, $columns, $table);
         $whereCount = count($where);
         $whereValues = [];
         $objList = [];
@@ -216,13 +216,17 @@ class DatabaseRecord {
         $this->loaded = true;
     }
 
-    public function getCount($params) { // fix
+    public function getCount($table = '', $where = false) { // fix
+        if ( $table == '' ) {
+            $table = $this->table;
+        }
+
         $query = sprintf(self::$countQuery, 'comment');
-        $paramValues = [];
+        $queryArgs = [];
 
-        $query .= $this->buildWherePartQuery($params, $paramValues);
+        $query .= $this->buildWherePartQuery($where, $queryArgs);
 
-        return self::execute($query, $paramValues, 'single')['count'];
+        return self::execute($query, $queryArgs, 'single')['count'];
     }
 
     private function load() {
@@ -230,7 +234,7 @@ class DatabaseRecord {
             return false;
         }
 
-        $row = $this->execute(sprintf(self::$selectQuery, $this->table), [$this->id]);
+        $row = $this->execute(sprintf(self::$selectByIdQuery, $this->table), [$this->id]);
 
         foreach ($this->columns as $column) {
             $this->fields[$column] = $row[$column];

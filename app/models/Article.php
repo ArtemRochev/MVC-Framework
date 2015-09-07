@@ -26,6 +26,6 @@ class Article extends Model {
 	}
 
 	public function getCommentCount() {
-		return Article::getCount(['article_id' => $this->id]);
+		return Article::getCount('comment', ['article_id' => $this->id]);
 	}
 }

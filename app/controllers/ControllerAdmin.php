@@ -3,15 +3,23 @@
 require_once(PROJ_PATH . 'app/models/Article.php');
 require_once(PROJ_PATH . 'app/models/Comment.php');
 require_once(PROJ_PATH . 'app/models/User.php');
-
 require_once(PROJ_PATH . 'app/controllers/ControllerArticle.php');
+require_once(CORE_PATH . 'tools/Text.php');
 
 class ControllerAdmin extends Controller {
 	function actionIndex() {
-		$this->checkAuth();
+		if ( Router::isAdmin() ) {
+			return Controller::redirect('admin/show-panel');
+		} else {
+			return Controller::redirect('admin/show-login-panel');
+		}
 	}
 	
 	function actionShowPanel() {
+		if ( !Router::isAdmin() ) {
+			return $this->redirect('/admin');
+		}
+
 		$this->view->render(
 			'index',
 			'',
@@ -20,40 +28,48 @@ class ControllerAdmin extends Controller {
 	}
 
 	function actionShowArticles() {
+		if ( !Router::isAdmin() ) {
+			return $this->redirect('/admin');
+		}
+
 		$this->view->render(
 			'articles',
 			Article::all(),
 			'admin'
 		);
 	}
-
-	function actionShowComments() {
-		$this->view->render(
-			'adminLayout',
-			'admin/comments',
-			Comment::getComments()
-		);
-	}
 	
 	function actionShowLoginPanel() {
 		$this->view->render(
 			'authPanel',
-			'',
+			[],
 			'user',
 			'empty'
 		);
+
+		isset($_POST['email'])
+			? $pass = $_POST['email']
+			: $pass = '';
 	}
 	
 	function checkAuth() {
-		isset($_POST['password'])
-			? $pass = $_POST['password']
-			: $pass = '';
 
-		if ( $pass === '123' ) {
-			return Controller::redirect('admin/show-panel');
-		} else {
-			return Controller::redirect('admin/show-login-panel');
+	}
+
+	public function actionLogIn() {
+		if ( !empty($_POST['email']) && !empty($_POST['pass']) ) {
+			$user = User::findOneWhere(['email' => $_POST['email']]);
+
+			if ( $_POST['pass'] === $user->pass ) {
+				$user->token = Text::generateRandomString();
+				$user->save();
+
+				setcookie('user_id', $user->id);
+				setcookie('token', $user->token);
+			}
 		}
+
+		$this->redirect('/admin');
 	}
 
 	public function actionSaveArticle() {

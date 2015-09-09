@@ -58,7 +58,7 @@ class DatabaseRecord {
         
         $query = sprintf(self::$deleteQuery, $this->table);
 
-        $this->execute($query, array($this->id), false);
+        $this->execute($query, array($this->id));
     }
 
     public function getColumn($name) {
@@ -119,7 +119,7 @@ class DatabaseRecord {
         return self::execute(sprintf(self::$existQuery, $table, $field), array($value));
     }
 
-    public static function findOne($id = null) {
+    public static function findOne($id = null) { // change name something like 'findById'
         if ( !$id ) {
             return;
         }
@@ -127,6 +127,18 @@ class DatabaseRecord {
         $type = get_called_class();
 
         return new $type($id);
+    }
+
+    public static function findOneWhere($where = []) { //fix
+        $type = get_called_class();
+        $table = strtolower($type);
+        $queryArgs = [];
+        $query = self::buildSelectQuery($table, 'id', $where, $queryArgs);
+
+        //var_dump($query);
+        //var_dump($queryArgs);
+
+        return new $type(self::execute($query, $queryArgs, 'single')['id']); //fix
     }
     
     public static function all($where = []) {
@@ -138,6 +150,8 @@ class DatabaseRecord {
         $rowCount;
         $query = self::buildSelectQuery($table, '*', $where, $queryArgs);
 
+        //var_dump($query);
+        //var_dump($queryArgs);
         $list = self::execute($query, $queryArgs, 'list');
         $rowCount = count($list);
 
@@ -188,10 +202,10 @@ class DatabaseRecord {
             $encording = self::$defaultEncording;
         }
         
-        self::execute(sprintf(self::$charsetQuery, $encording), array(), false);
+        self::execute(sprintf(self::$charsetQuery, $encording));
     }
     
-    private function execute($query, $args = [], $returningData = 'single') {
+    private function execute($query, $args = [], $returningData = false) { //fix - add method for fetching data
         $query = self::$db->prepare($query);
 
         try {
@@ -235,7 +249,7 @@ class DatabaseRecord {
             return false;
         }
 
-        $row = $this->execute(sprintf(self::$selectByIdQuery, $this->table), [$this->id]);
+        $row = $this->execute(sprintf(self::$selectByIdQuery, $this->table), [$this->id], 'single');
 
         foreach ($this->columns as $column) {
             $this->fields[$column] = $row[$column];
@@ -256,7 +270,7 @@ class DatabaseRecord {
         $modifiedFieldsStr = rtrim($modifiedFieldsStr, ",");
         
         $query = sprintf(self::$updateQuery, $this->table, $modifiedFieldsStr);
-        $this->execute($query, array($this->id), false);
+        $this->execute($query, array($this->id));
     }
 
     private static function initDatabase() {

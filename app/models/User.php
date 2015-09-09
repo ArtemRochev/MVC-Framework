@@ -3,7 +3,7 @@
 require_once(CORE_PATH . 'base/Model.php');
 
 class User extends Model {
-	protected $columns = ['id', 'name', 'email'];
+	protected $columns = ['id', 'name', 'email', 'pass', 'token', 'is_admin'];
 	protected $parent = '';
 	protected $childrens = [];
 

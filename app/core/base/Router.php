@@ -1,6 +1,6 @@
 <?php
 
-class Router {
+class Router { //fix? rename
 	const DEFAULT_MODEL = 'Main';
 	const DEFAULT_CONTROLLER = 'Main';
 	const DEFAULT_ACTION = 'actionIndex';
@@ -106,5 +106,17 @@ class Router {
 		} else {
 			throw new NotFoundException("404");
 		}
+	}
+
+	public static function isAdmin() {
+		if ( isset($_COOKIE['token']) && isset($_COOKIE['user_id']) ) {
+			$user = User::findOneWhere(['id' => $_COOKIE['user_id']]);
+
+			if ( $_COOKIE['token'] == $user->token && $user->is_admin ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

@@ -3,7 +3,6 @@
 require_once(CORE_PATH . 'base/Model.php');
 
 class Article extends Model {
-	protected $columns = ['title', 'content', 'img_preview_url', 'created'];
 	protected $parent = 'author';
 	protected $childrens = ['comment'];
 

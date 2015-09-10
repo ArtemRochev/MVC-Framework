@@ -3,7 +3,6 @@
 require_once(CORE_PATH . 'base/Model.php');
 
 class Comment extends Model {
-	protected $columns = ['text', 'created'];
 	protected $parent = 'author';
 	protected $childrens = [];
 	

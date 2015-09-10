@@ -6,7 +6,7 @@ class Router { //fix? rename
 	const DEFAULT_ACTION = 'actionIndex';
 
 
-	function parseRoute() {
+	private function parseRoute() {
 		$data = explode('?', $_SERVER['REQUEST_URI']);
 
 		$routes = explode('/', $data[0]);
@@ -110,7 +110,7 @@ class Router { //fix? rename
 
 	public static function isAdmin() {
 		if ( isset($_COOKIE['token']) && isset($_COOKIE['user_id']) ) {
-			$user = User::findOneWhere(['id' => $_COOKIE['user_id']]);
+			$user = User::findById($_COOKIE['user_id']);
 
 			if ( $_COOKIE['token'] == $user->token && $user->is_admin ) {
 				return true;

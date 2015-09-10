@@ -21,7 +21,7 @@ class ControllerArticle extends Controller {
 			return Controller::redirectTo404($_SERVER['REQUEST_URI']);
 		}
 
-		if ( !$article = Article::findOne($_GET['id']) ) {
+		if ( !$article = Article::findById($_GET['id']) ) {
 			return Controller::redirectTo404($_SERVER['REQUEST_URI']);
 		}
 

@@ -1,17 +1,15 @@
 <?php
 
 class DatabaseRecord {
-    private static $deleteQuery = 'DELETE FROM `%s` WHERE id=?';
-    private static $insertQuery = 'INSERT INTO `%1$s` (%2$s) VALUES (%3$s)';
-    private static $selectQuery   = 'SELECT %s FROM `%s`';
-    private static $selectByIdQuery = 'SELECT * FROM `%s` WHERE id=?';
-    private static $updateQuery = 'UPDATE `%1$s` SET %2$s WHERE id=?';
-    private static $lastIdQuery = 'SELECT LAST_INSERT_ID()';
-    private static $existQuery = 'SELECT EXISTS(SELECT * FROM %1$s WHERE %2$s=?) as isExist';
-    private static $countQuery = 'SELECT count(*) as count FROM `%s`'; // fix - merge with other query
-    private static $charsetQuery = 'SET NAMES %1$s';
+    private static $deleteQuery =       'DELETE FROM `%s` WHERE id=?';
+    private static $insertQuery =       'INSERT INTO `%1$s` (%2$s) VALUES (%3$s)';
+    private static $selectQuery =       'SELECT %s FROM `%s`';
+    private static $selectByIdQuery =   'SELECT * FROM `%s` WHERE id=?'; //merge with other query?
+    private static $updateQuery =       'UPDATE `%1$s` SET %2$s WHERE id=?';
+    private static $lastIdQuery =       'SELECT LAST_INSERT_ID()';
+    private static $setNamesQuery =      'SET NAMES %s';
     
-    private static $defaultEncording = 'utf8';
+    private static $defaultCharacter = 'UTF8';
     private static $db = null;
 
     private $fields   = [];
@@ -22,7 +20,7 @@ class DatabaseRecord {
     private $table    = null;
     
     public function __construct($id = null) {
-        self::initDatabase();
+        self::checkDatabase();
 
         $this->id = $id;
         $this->class = get_class($this);
@@ -51,16 +49,6 @@ class DatabaseRecord {
         $this->setColumn($name, $value);
     }
 
-    public function delete() {
-        if ( $this->id == NULL ) {
-            throw new InvalidOperationException;
-        }
-        
-        $query = sprintf(self::$deleteQuery, $this->table);
-
-        $this->execute($query, array($this->id));
-    }
-
     public function getColumn($name) {
         if ( $name == 'id' ) {
             return $this->id;
@@ -77,17 +65,22 @@ class DatabaseRecord {
         return $this->fields[$name];
     }
 
+    public function setColumn($name, $value) {
+        $this->fields[$name] = $value;
+        $this->modified = true;
+    }
+
     public function getParent($name) {
-        return new User($this->getColumn($name));
+        return new User($this->getColumn($name)); //fix
     }
 
     public function getChildren($name) {
-        $type = ucfirst($name);
+        $class = ucfirst($name);
 
-        return new $type;
+        return new $class;
     }
 
-    public function getCount($table = '', $where = []) { // fix
+    public function getCount($table = '', $where = []) {
         if ( $table == '' ) {
             $table = $this->table;
         }
@@ -99,87 +92,104 @@ class DatabaseRecord {
     }
 
     public function save() {
-       if ( $this->modified || !$this->id ) {
+        if ( $this->modified || !$this->id ) {
             if ( !$this->id ) {
                 $this->insert();
             } else {
                 $this->update();
             }
         }
-        
+
         $this->modified = false;
     }
 
-    public function setColumn($name, $value) {
-        $this->fields[$name] = $value;
-        $this->modified = true;
+    public function delete() {
+        if ( $this->id == NULL ) {
+            throw new InvalidOperationException;
+        }
+        
+        $query = sprintf(self::$deleteQuery, $this->table);
+
+        $this->execute($query, array($this->id));
     }
     
-    public static function checkExists($table, $field, $value) {
-        return self::execute(sprintf(self::$existQuery, $table, $field), array($value));
+    public static function checkExists($table, $where) {
+        $queryArgs = [];
+        $query = self::buildSelectQuery($table, 'count(*) as count', $where, $queryArgs);
+
+        return self::execute($query, $queryArgs, 'single');
     }
 
-    public static function findOne($id = null) { // change name something like 'findById'
-        if ( !$id ) {
-            return;
+    public static function findById($id) {
+        $class = get_called_class();
+
+        return new $class($id);
+    }
+
+    public static function findOne($where = []) {
+        if ( is_numeric($where) ) {
+            self::findById($where);
         }
 
-        $type = get_called_class();
-
-        return new $type($id);
-    }
-
-    public static function findOneWhere($where = []) { //fix
         $type = get_called_class();
         $table = strtolower($type);
         $queryArgs = [];
         $query = self::buildSelectQuery($table, 'id', $where, $queryArgs);
 
-        //var_dump($query);
-        //var_dump($queryArgs);
-
         return new $type(self::execute($query, $queryArgs, 'single')['id']); //fix
     }
     
-    public static function all($where = []) {
-        self::initDatabase();
+    public static function all($select = '*') {
+        return self::allWhere([], $select);
+    }
+
+    public static function allWhere($where = [], $select = '*') {
         $type = get_called_class();
         $table = strtolower($type);
         $queryArgs = [];
+
+        $query  = self::buildSelectQuery($table, $select, $where, $queryArgs);
+        $params = self::execute($query, $queryArgs, 'list');
+
+        return self::buildObject($params);
+    }
+
+    private static function buildObject($params) {
+        $class = get_called_class();
+        $table = strtolower($class);
         $objList = [];
-        $rowCount;
-        $query = self::buildSelectQuery($table, '*', $where, $queryArgs);
 
-        //var_dump($query);
-        //var_dump($queryArgs);
-        $list = self::execute($query, $queryArgs, 'list');
-        $rowCount = count($list);
-
-        for ( $i = 0; $i < $rowCount; $i++ ) {
-            $obj = new $type;
-            $obj->id = $list[$i]['id'];
-            $obj->fields = $list[$i];
+        foreach ( $params as $index => $parameterPack) {
+            $obj = new $class;
+            $obj->id = $parameterPack['id'];
+            $obj->fields = $parameterPack;
             $obj->loaded = true;
             $obj->table = $table;
 
             $objList[] = $obj;
         }
-        
+
+        if ( count($objList) == 1 ) {
+            return $objList[0];
+        }
+
         return $objList;
     }
 
     private static function buildSelectQuery($from, $select = '*', $where = [], &$args = []) {
-        if ( empty($where) ) {
-            return sprintf(self::$selectQuery, $select, $from);
+        $query = sprintf(self::$selectQuery, $select, $from);
+
+        if ( !empty($where) ) {
+            $query .= self::buildWherePartQuery($where, $args);
         }
 
-        return sprintf(self::$selectQuery, $select, $from) . self::buildWherePartQuery($where, $args);
+        return $query;
     }
 
     private static function buildWherePartQuery($params, &$whereValues = []) {
         $where = ' WHERE';
 
-        foreach ($params as $column => $value) {
+        foreach( $params as $column => $value ) {
             $where .= ' ' . $column . '=? AND';
             $whereValues[] = $value;
         }
@@ -194,18 +204,22 @@ class DatabaseRecord {
             echo "Error connect to DB: " . $e->getMessage() . "\n";
         }
         
-        self::setEncording();
+        self::setNames();
+        self::checkDatabase();
+        self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public static function setEncording($encording = null) {
-        if ( !$encording ) {
-            $encording = self::$defaultEncording;
+    public static function setNames($character = null) {
+        if ( empty($character) ) {
+            $character = self::$defaultCharacter;
         }
         
-        self::execute(sprintf(self::$charsetQuery, $encording));
+        self::execute(sprintf(self::$setNamesQuery, $character));
     }
     
-    private function execute($query, $args = [], $returningData = false) { //fix - add method for fetching data
+    private function execute($query, $args = [], $returningData = false) {
+        self::checkDatabase();
+
         $query = self::$db->prepare($query);
 
         try {
@@ -231,7 +245,7 @@ class DatabaseRecord {
         }
         $fieldsStr = rtrim($fieldsStr, ",");
         $valuesStr = rtrim($valuesStr, ",");
-        //var_dump($this->fields);
+
         $query = sprintf(
             self::$insertQuery,
             $this->table,
@@ -273,10 +287,9 @@ class DatabaseRecord {
         $this->execute($query, array($this->id));
     }
 
-    private static function initDatabase() {
+    private static function checkDatabase() {
         if ( self::$db === null ) {
             throw new DatabaseException();
         }
-        self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 }

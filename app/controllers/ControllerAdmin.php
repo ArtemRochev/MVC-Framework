@@ -7,6 +7,8 @@ require_once(PROJ_PATH . 'app/controllers/ControllerArticle.php');
 require_once(CORE_PATH . 'tools/Text.php');
 
 class ControllerAdmin extends Controller {
+	const ACCESS_DENIED_MSG = 'Access denied';
+
 	function actionIndex() {
 		if ( Router::isAdmin() ) {
 			return Controller::redirect('admin/show-panel');
@@ -57,8 +59,10 @@ class ControllerAdmin extends Controller {
 	}
 
 	public function actionLogIn() {
+		$success = false;
+
 		if ( !empty($_POST['email']) && !empty($_POST['pass']) ) {
-			$user = User::findOneWhere(['email' => $_POST['email']]);
+			$user = User::findOne(['email' => $_POST['email']]);
 
 			if ( $_POST['pass'] === $user->pass ) {
 				$user->token = Text::generateRandomString();
@@ -66,10 +70,16 @@ class ControllerAdmin extends Controller {
 
 				setcookie('user_id', $user->id);
 				setcookie('token', $user->token);
+
+				$success = true;
 			}
 		}
 
-		$this->redirect('/admin');
+		if ( $success ) {
+			return $this->redirect('/admin');
+		}
+
+		return $this->redirect('/admin/show-login-panel?error=Email or Password is incorrect');
 	}
 
 	public function actionSaveArticle() {
@@ -88,7 +98,7 @@ class ControllerAdmin extends Controller {
 		$article;
 
 		if ( isset($_GET['id']) ) {
-			$article = Article::findOne($_GET['id']);
+			$article = Article::findById($_GET['id']);
 		} else {
 			$article = new Article; //fix
 			$article->title = '';

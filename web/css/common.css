@@ -27,6 +27,11 @@ form textarea {
     width: 90%;
 }
 
+.main-col {
+    position: relative;
+    width: 80%;
+    margin: auto;
+}
 
 .title {
     color: lightslategrey;
@@ -44,6 +49,7 @@ form textarea {
 }
 
 .w-limmiter {
+    margin: auto;
     max-width: 900px;
 }
 
@@ -111,7 +117,5 @@ form textarea {
 }
 
 #content {
-    width: 80%;
-    margin: auto;
     padding: 80px 0;
 }

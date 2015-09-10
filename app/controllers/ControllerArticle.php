@@ -1,8 +1,8 @@
 <?php
 
-require_once(PROJ_PATH . 'app/models/User.php');
-require_once(PROJ_PATH . 'app/models/Article.php');
-require_once(PROJ_PATH . 'app/models/Comment.php');
+require_once(APP_PATH . 'models/User.php');
+require_once(APP_PATH . 'models/Article.php');
+require_once(APP_PATH . 'models/Comment.php');
 
 class ControllerArticle extends Controller {
 	function __construct() {
@@ -34,21 +34,6 @@ class ControllerArticle extends Controller {
 		]);
 	}
 
-	public function actionSaveComment() {
-		if ( !isset($_POST['article_id']) ) {
-			return $this->redirect('/article');
-		}
-
-		$comment = new Comment();
-
-		$comment->author_id = $_POST['author_id'];
-		$comment->article_id = $_POST['article_id'];
-		$comment->text = $_POST['text'];
-		$comment->save();
-
-		$this->redirect(Url::to('/article/show-article', ['id' => $_POST['article_id']]));
-	}
-
 	public static function saveArticle($params) {
 		$article = new Article;
 
@@ -67,5 +52,23 @@ class ControllerArticle extends Controller {
 			$article = new Article($id);
 			$article->delete();
 		}
+	}
+
+	public function actionSaveComment() {
+		if ( !isset($_POST['article_id']) ) {
+			return $this->redirect('/article');
+		}
+
+		Comment::saveComment($_POST);
+		$this->redirect(Url::to('/article/show-article', ['id' => $_POST['article_id']]));
+	}
+
+	public function actionDeleteComment() {
+		if ( empty($_POST['id']) ) {
+			return $this->redirect('/article');
+		}
+
+		Comment::deleteComment($_POST['id']);
+		$this->redirect('/article');
 	}
 }

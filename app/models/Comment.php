@@ -6,11 +6,18 @@ class Comment extends Model {
 	protected $parent = 'author';
 	protected $childrens = [];
 	
-	public static function saveComment($userId) {
-		$comment = new Comment;
-		
-		$comment->text = $_POST['text'];
-		$comment->user_id = $userId;
+	public static function saveComment($data) {
+		//die('f');
+		$comment = new Comment();
+
+		$comment->author_id = $data['author_id'];
+		$comment->article_id = $data['article_id'];
+		$comment->text = $data['text'];
 		$comment->save();
+	}
+
+	public static function deleteComment($id) {
+		$comment = Comment::findById($id);
+		$comment->delete();
 	}
 }

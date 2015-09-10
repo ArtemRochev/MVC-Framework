@@ -1,16 +1,16 @@
 <?php
 
-require_once(PROJ_PATH . 'app/models/Article.php');
-require_once(PROJ_PATH . 'app/models/Comment.php');
-require_once(PROJ_PATH . 'app/models/User.php');
-require_once(PROJ_PATH . 'app/controllers/ControllerArticle.php');
-require_once(CORE_PATH . 'tools/Text.php');
+require_once(APP_PATH . 'models/Article.php');
+require_once(APP_PATH . 'models/Comment.php');
+require_once(APP_PATH . 'models/User.php');
+require_once(APP_PATH . 'controllers/ControllerArticle.php');
+require_once(TOOLS_PATH . 'Text.php');
 
 class ControllerAdmin extends Controller {
 	const ACCESS_DENIED_MSG = 'Access denied';
 
 	function actionIndex() {
-		if ( Router::isAdmin() ) {
+		if ( App::isAdmin() ) {
 			return Controller::redirect('admin/show-panel');
 		} else {
 			return Controller::redirect('admin/show-login-panel');
@@ -18,7 +18,7 @@ class ControllerAdmin extends Controller {
 	}
 	
 	function actionShowPanel() {
-		if ( !Router::isAdmin() ) {
+		if ( !App::isAdmin() ) {
 			return $this->redirect('/admin');
 		}
 
@@ -30,7 +30,7 @@ class ControllerAdmin extends Controller {
 	}
 
 	function actionShowArticles() {
-		if ( !Router::isAdmin() ) {
+		if ( !App::isAdmin() ) {
 			return $this->redirect('/admin');
 		}
 
@@ -68,8 +68,8 @@ class ControllerAdmin extends Controller {
 				$user->token = Text::generateRandomString();
 				$user->save();
 
-				setcookie('user_id', $user->id);
-				setcookie('token', $user->token);
+				setcookie('user_id', $user->id, 0, '/');
+				setcookie('token', $user->token, 0, '/');
 
 				$success = true;
 			}

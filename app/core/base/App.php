@@ -1,10 +1,13 @@
 <?php
 
-class Router { //fix? rename
-	const DEFAULT_MODEL = 'Main';
-	const DEFAULT_CONTROLLER = 'Main';
-	const DEFAULT_ACTION = 'actionIndex';
+require_once(APP_PATH . 'models/User.php');
 
+class App {
+	const DEFAULT_MODEL = 		'Main';
+	const DEFAULT_CONTROLLER = 	'Main';
+	const DEFAULT_ACTION = 		'actionIndex';
+
+	//public static $user;
 
 	private function parseRoute() {
 		$data = explode('?', $_SERVER['REQUEST_URI']);
@@ -33,7 +36,7 @@ class Router { //fix? rename
 			return ucfirst($routesData[1]);
 		}
 
-		return Router::DEFAULT_CONTROLLER;
+		return App::DEFAULT_CONTROLLER;
 	}
 
 	function getActionName($routesData) {
@@ -50,11 +53,11 @@ class Router { //fix? rename
 			return 'action' . str_replace('-', '', $action);
 		}
 
-		return Router::DEFAULT_ACTION;
+		return App::DEFAULT_ACTION;
 	}
 
 	function includeController($name) {
-		$controllerPath = PROJ_PATH . 'app/controllers/' . $name . PHP_EXT;
+		$controllerPath = APP_PATH . 'controllers/' . $name . PHP_EXT;
 
 		if ( !file_exists($controllerPath) ) {
 			throw new NotFoundException;
@@ -64,23 +67,20 @@ class Router { //fix? rename
 	}
 
 	function includeModel($name) {
-		$modelPath = 'app/models/' . $name . PHP_EXT;
+		$modelPath = APP_PATH . 'models/' . $name . PHP_EXT;
 
 		if ( file_exists($modelPath) ) {
 			include($modelPath);
 		}
 	}
 
-	function startRouting() {
+	public function run() {
 		$modelName;
 		$controllerName;
 		$actionName;
 		$model;
 		$controller;
 		$routesData = $this->parseRoute();
-
-		//var_dump($routesData);
-		//die();
 
 		$controllerName = $this->getControllerName($routesData['routes']);
 		$actionName = $this->getActionName($routesData['routes']);
@@ -93,7 +93,7 @@ class Router { //fix? rename
 			echo "Controller: $controllerName <br>";
 			echo "Action: $actionName <br>";
 			echo "Model: $modelName <br>";
-			//die();
+			die();
 		}
 
 		$this->includeController($controllerName);

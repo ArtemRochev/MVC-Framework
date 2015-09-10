@@ -1,19 +1,18 @@
 <?php
 
 define("PHP_EXT", '.php');
-define('PROJ_PATH', '/home/artem/server/nginx/www/book/');
-define('VIEWS_PATH', PROJ_PATH . 'app/views/');
-define('CORE_PATH', PROJ_PATH . 'app/core/');
+define('APP_PATH', __DIR__ . '/');
+define('VIEWS_PATH', APP_PATH . 'views/');
+define('CORE_PATH', APP_PATH . 'core/');
+define('TOOLS_PATH', CORE_PATH . 'tools/');
 
-require_once(PROJ_PATH . 'app/config.php');
-
+require_once(APP_PATH . 'config.php');
 require_once(CORE_PATH . 'exceptions.php');
 require_once(CORE_PATH . 'base/Model.php');
 require_once(CORE_PATH . 'base/View.php');
 require_once(CORE_PATH . 'base/Controller.php');
-require_once(CORE_PATH . 'base/Router.php');
+require_once(CORE_PATH . 'base/App.php');
 require_once(CORE_PATH . 'db/DatabaseRecord.php');
-
 
 try {
 	$db = new PDO("mysql:" .
@@ -29,10 +28,10 @@ try {
 	echo "PDO error: " . $e->getMessage() . "\n";
 }
 
-$router = new Router;
+$app = new App;
 
 try {
-	$router->startRouting();
+	$app->run();
 } catch (NotFoundException $e) {
 	Controller::redirectTo404($_SERVER['REQUEST_URI']);
 }

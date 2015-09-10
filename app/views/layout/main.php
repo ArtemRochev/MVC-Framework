@@ -14,14 +14,22 @@
 </head>
 <body>
 	<div id="topPanel">
-		<ul class="w-limmiter">
-			<li><a href="/" class="title">Home</a></li>
-			<li><a href="/article" class="title">Article</a></li>
-			<li><a href="/admin" class="title">Admin</a></li>
-		</ul>
+		<div class="w-limmiter main-col">
+			<ul>
+				<li><a href="/" class="title">Home</a></li>
+				<li><a href="/article" class="title">Article</a></li>
+				<li><a href="/admin" class="title">Admin</a></li>
+			</ul>
+
+			<div id="user">
+				<p>
+					Вы вошли как, <?= App::isAdmin() ? 'admin' : 'гость' ?>
+				</p>
+			</div>
+		</div>
 	</div>
 
-	<div id="content" class="w-limmiter">
+	<div id="content" class="w-limmiter main-col">
 		<?php
 			include $view;
 		?>

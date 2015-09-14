@@ -10,7 +10,7 @@ class ControllerArticle extends Controller {
 	}
 	
 	public function actionIndex() {
-		$this->view->render(
+		$this->view->renderPublic(
 			'articles',
 			Article::all()
 		);

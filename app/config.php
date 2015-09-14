@@ -7,5 +7,6 @@ $config = [
 		'user' => 'book',
 		'pass' => '1111'
 	],
-	'character' => 'utf8'
+	'character' => 'utf8',
+	'host' => '127.0.0.1:70/web'
 ];

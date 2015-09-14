@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<base href="http://127.0.0.1:70">
+	<base href="<?= App::$host ?>">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Test</title>

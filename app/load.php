@@ -16,19 +16,17 @@ require_once(CORE_PATH . 'db/DatabaseRecord.php');
 
 try {
 	$db = new PDO("mysql:" .
-		"dbname=" . $config['db']['name'] .
-		";host=" .  $config['db']['host'],
+		"dbname=" . $config['db']['name'] . ';' .
+		"host=" .	$config['db']['host'],
 					$config['db']['user'],
 					$config['db']['pass']);
 
-	$db->exec("SET NAMES SET" . $config['character']);
-	
-	DatabaseRecord::setDatabase($db);
+	DatabaseRecord::setDatabase($db, $config['character']);
 } catch (PDOException $e) {
 	echo "PDO error: " . $e->getMessage() . "\n";
 }
 
-$app = new App;
+$app = new App($config);
 
 try {
 	$app->run();

@@ -8,12 +8,30 @@ class App {
 	const DEFAULT_ACTION = 		'actionIndex';
 
 	//public static $user;
+	public static $host;
+
+	public function __config($config) {
+		self::$host = $config['host'];
+	}
 
 	private function parseRoute() {
-		$data = explode('?', $_SERVER['REQUEST_URI']);
+		$request = $_SERVER['REQUEST_URI'];
+		$data = explode('?', $request);
+		$admin = false;
 
-		$routes = explode('/', $data[0]);
+		$routes = explode('/', trim($data[0], '/'));
 		$params = [];
+
+		if ( $routes[0] == 'admin' ) {
+			array_shift($routes);
+
+//			if ( empty($routes[1]) ) {
+//				$routes[1] = $routes[0];
+//				$routes[0] = App::DEFAULT_CONTROLLER;
+//			}
+
+			$admin = true;
+		}
 
 		if ( isset($data[1]) ) {
 			$paramPairs = explode('&', $data[1]);
@@ -25,23 +43,24 @@ class App {
 			}
 		}
 
-		return array(
+		return [
 			'routes' => $routes,
-			'params' => $params
-		);
+			'params' => $params,
+			'admin' => $admin
+		];
 	}
 
 	function getControllerName($routesData) {
-		if ( $routesData[1] != '' ) {
-			return ucfirst($routesData[1]);
+		if ( !empty($routesData[0]) ) {
+			return ucfirst($routesData[0]);
 		}
 
 		return App::DEFAULT_CONTROLLER;
 	}
 
 	function getActionName($routesData) {
-		if ( isset($routesData[2]) ) {
-			$action = ucfirst($routesData[2]);
+		if ( isset($routesData[1]) ) {
+			$action = ucfirst($routesData[1]);
 			$valueLen = strlen($action);
 
 			for ( $i = 0; $i < $valueLen; $i++ ) {
@@ -56,8 +75,12 @@ class App {
 		return App::DEFAULT_ACTION;
 	}
 
-	function includeController($name) {
-		$controllerPath = APP_PATH . 'controllers/' . $name . PHP_EXT;
+	function includeController($name, $admin = false) {
+		if ( !$admin ) {
+			$controllerPath = APP_PATH . 'controllers/'		 . $name . PHP_EXT;
+		} else {
+			$controllerPath = APP_PATH . 'controllers/admin/' . $name . PHP_EXT;
+		}
 
 		if ( !file_exists($controllerPath) ) {
 			throw new NotFoundException;
@@ -93,10 +116,12 @@ class App {
 			echo "Controller: $controllerName <br>";
 			echo "Action: $actionName <br>";
 			echo "Model: $modelName <br>";
+
+			var_dump($routesData);
 			die();
 		}
 
-		$this->includeController($controllerName);
+		$this->includeController($controllerName, $routesData['admin']);
 		$this->includeModel($modelName);
 		
 		$controler = new $controllerName();

@@ -200,14 +200,14 @@ class DatabaseRecord {
         return rtrim($where, 'AND'); //fix
     }
 
-    public static function setDatabase(PDO $db) {
+    public static function setDatabase(PDO $db, $charset) {
         try {
             self::$db = $db;
         } catch (PDOException $e) {
             echo "Error connect to DB: " . $e->getMessage() . "\n";
         }
         
-        self::setNames();
+        self::setNames($charset);
         self::checkDatabase();
         self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }

@@ -4,11 +4,10 @@ require_once(APP_PATH . 'models/Article.php');
 require_once(APP_PATH . 'models/Comment.php');
 require_once(APP_PATH . 'models/User.php');
 require_once(APP_PATH . 'controllers/ControllerArticle.php');
+require_once(CORE_PATH . 'base/ControllerAdmin.php');
 require_once(TOOLS_PATH . 'Text.php');
 
-class ControllerAdmin extends Controller {
-	const ACCESS_DENIED_MSG = 'Access denied';
-
+class ControllerMain extends ControllerAdmin {
 	function actionIndex() {
 		if ( App::isAdmin() ) {
 			return Controller::redirect('admin/show-panel');
@@ -18,44 +17,11 @@ class ControllerAdmin extends Controller {
 	}
 	
 	function actionShowPanel() {
-		if ( !App::isAdmin() ) {
-			return $this->redirect('/admin');
-		}
-
-		$this->view->render(
+		$this->view->renderAdmin(
 			'index',
 			'',
 			'admin'
 		);
-	}
-
-	function actionShowArticles() {
-		if ( !App::isAdmin() ) {
-			return $this->redirect('/admin');
-		}
-
-		$this->view->render(
-			'articles',
-			Article::all(),
-			'admin'
-		);
-	}
-	
-	function actionShowLoginPanel() {
-		$this->view->render(
-			'authPanel',
-			[],
-			'user',
-			'empty'
-		);
-
-		isset($_POST['email'])
-			? $pass = $_POST['email']
-			: $pass = '';
-	}
-	
-	function checkAuth() {
-
 	}
 
 	public function actionLogIn() {

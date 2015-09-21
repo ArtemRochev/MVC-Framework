@@ -1,6 +1,7 @@
 <?php
 
 require_once(APP_PATH . 'models/User.php');
+require_once(TOOLS_PATH . 'Text.php');
 
 class App {
 	const DEFAULT_MODEL = 		'Main';
@@ -10,7 +11,7 @@ class App {
 	//public static $user;
 	public static $host;
 
-	public function __config($config) {
+	public function __construct($config) {
 		self::$host = $config['host'];
 	}
 
@@ -21,6 +22,7 @@ class App {
 
 		$routes = explode('/', trim($data[0], '/'));
 		$params = [];
+
 
 		if ( $routes[0] == 'admin' ) {
 			array_shift($routes);
@@ -52,24 +54,15 @@ class App {
 
 	function getControllerName($routesData) {
 		if ( !empty($routesData[0]) ) {
-			return ucfirst($routesData[0]);
+			return Text::hyphenSeparatedToCamelCase($routesData[0]);
 		}
 
 		return App::DEFAULT_CONTROLLER;
 	}
 
 	function getActionName($routesData) {
-		if ( isset($routesData[1]) ) {
-			$action = ucfirst($routesData[1]);
-			$valueLen = strlen($action);
-
-			for ( $i = 0; $i < $valueLen; $i++ ) {
-				if ( $action[$i] == '-' && $i < $valueLen - 1 ) {
-					$action[$i+1] = ucfirst($action[$i+1]);
-				}
-			}
-
-			return 'action' . str_replace('-', '', $action);
+		if ( !empty($routesData[1]) ) {
+			return 'action' . Text::hyphenSeparatedToCamelCase($routesData[1]);
 		}
 
 		return App::DEFAULT_ACTION;

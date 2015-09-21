@@ -1,4 +1,4 @@
-<form id="adminPanelEnter" role="form" method="post" action="/admin/log-in">
+<form id="adminPanelEnter" role="form" method="post" action="/admin/main/log-in">
 	<h3>Вход</h3>
 	<div class="form-group">
 		<input type="text" id="email" name="email" placeholder="Email" required><br>

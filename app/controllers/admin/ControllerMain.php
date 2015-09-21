@@ -10,14 +10,14 @@ require_once(TOOLS_PATH . 'Text.php');
 class ControllerMain extends ControllerAdmin {
 	function actionIndex() {
 		if ( App::isAdmin() ) {
-			return Controller::redirect('admin/show-panel');
+			return Controller::redirect('admin/article');
 		} else {
-			return Controller::redirect('admin/show-login-panel');
+			return Controller::redirect('main/show-login-panel');
 		}
 	}
 	
 	function actionShowPanel() {
-		$this->view->renderAdmin(
+		$this->view->render(
 			'index',
 			'',
 			'admin'
@@ -45,7 +45,7 @@ class ControllerMain extends ControllerAdmin {
 			return $this->redirect('/admin');
 		}
 
-		return $this->redirect('/admin/show-login-panel?error=Email or Password is incorrect');
+		return $this->redirect('/main/show-login-panel?error=Email or Password is incorrect');
 	}
 
 	public function actionSaveArticle() {
@@ -75,5 +75,18 @@ class ControllerMain extends ControllerAdmin {
 		}
 
 		$this->view->render('modifyArticle', ['article' => $article], 'admin');
+	}
+
+	public function actionShowLoginPanel() {
+		$this->view->render(
+			'authPanel',
+			[],
+			'user',
+			'empty'
+		);
+
+		isset($_POST['email'])
+			? $pass = $_POST['email']
+			: $pass = '';
 	}
 }

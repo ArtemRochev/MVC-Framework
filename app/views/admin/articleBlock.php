@@ -17,10 +17,10 @@
 	</p>
 	<ul class="button-panel">
 		<li>
-			<a href="<?= Url::to('admin/delete-article', ['id' => $data['article']->id]) ?>" class="btn btn-red">Удалить</a>
+			<a href="<?= Url::to('admin/article/delete', ['id' => $data['article']->id]) ?>" class="btn btn-red">Удалить</a>
 		</li>
 		<li>
-			<a href="<?= Url::to('admin/modify-article', ['id' => $data['article']->id]) ?>" class="btn btn-blue">Изменить</a>
+			<a href="<?= Url::to('admin/article/modify', ['id' => $data['article']->id]) ?>" class="btn btn-blue">Изменить</a>
 		</li>
 	</ul>
 	</form>

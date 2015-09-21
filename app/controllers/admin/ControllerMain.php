@@ -16,35 +16,6 @@ class ControllerMain extends ControllerAdmin {
 		}
 	}
 
-	public function actionSaveArticle() {
-		ControllerArticle::saveArticle($_POST);
-
-		return Controller::redirect('/admin/show-articles');
-	}
-
-	public function actionDeleteArticle() {
-		ControllerArticle::deleteArticle($_GET['id']);
-
-		return Controller::redirect('/admin/show-articles');
-	}
-
-	public function actionModifyArticle() {
-		$article;
-
-		if ( isset($_GET['id']) ) {
-			$article = Article::findById($_GET['id']);
-		} else {
-			$article = new Article; //fix
-			$article->title = '';
-			$article->content = '';
-			$article->img_preview_url = '';
-			$article->author_id = 1;
-			$article->save();
-		}
-
-		$this->view->render('modifyArticle', ['article' => $article], 'admin');
-	}
-
 	public function actionShowLoginPanel() {
 		$this->view->render(
 			'authPanel',

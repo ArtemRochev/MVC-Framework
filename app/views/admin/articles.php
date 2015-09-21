@@ -1,4 +1,4 @@
-<a href="/admin/modify-article" class="btn">Создать статью</a>
+<a href="/admin/article/modify" class="btn">Создать статью</a>
 
 <?php
 	foreach ( $data as $article ) {

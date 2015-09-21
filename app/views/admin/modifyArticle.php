@@ -1,4 +1,4 @@
-<form id="addArticle" class="w-limmiter" role="form" method="post" action="/admin/save-article">
+<form id="addArticle" class="w-limmiter" role="form" method="post" action="/admin/article/save">
     <h3>
         Редактировать статью
     </h3>

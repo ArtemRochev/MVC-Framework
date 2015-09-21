@@ -7,8 +7,7 @@ class ControllerArticle extends ControllerAdmin {
     public function actionIndex() {
         $this->view->render(
             'articles',
-            Article::all(),
-            'admin'
+            Article::all()
         );
     }
 }

@@ -10,42 +10,10 @@ require_once(TOOLS_PATH . 'Text.php');
 class ControllerMain extends ControllerAdmin {
 	function actionIndex() {
 		if ( App::isAdmin() ) {
-			return Controller::redirect('admin/article');
+			Controller::redirect('admin/article');
 		} else {
-			return Controller::redirect('main/show-login-panel');
+			Controller::redirect('/log-in');
 		}
-	}
-	
-	function actionShowPanel() {
-		$this->view->render(
-			'index',
-			'',
-			'admin'
-		);
-	}
-
-	public function actionLogIn() {
-		$success = false;
-
-		if ( !empty($_POST['email']) && !empty($_POST['pass']) ) {
-			$user = User::findOne(['email' => $_POST['email']]);
-
-			if ( $_POST['pass'] === $user->pass ) {
-				$user->token = Text::generateRandomString();
-				$user->save();
-
-				setcookie('user_id', $user->id, 0, '/');
-				setcookie('token', $user->token, 0, '/');
-
-				$success = true;
-			}
-		}
-
-		if ( $success ) {
-			return $this->redirect('/admin');
-		}
-
-		return $this->redirect('/main/show-login-panel?error=Email or Password is incorrect');
 	}
 
 	public function actionSaveArticle() {

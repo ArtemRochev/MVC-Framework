@@ -3,12 +3,19 @@
 require_once(CORE_PATH . 'tools/Url.php');
 
 class View {
-	public function render($view = 'index', $data = null, $theme = 'user', $layout = 'main') {
-//		if ( !App::isAdmin() ) {
-//			return Controller::redirect('/admin');
-//		}
+	protected $forAdmin = false;
 
-		if ( $theme == 'admin' ) {
+	public function __construct($forAdmin = false) {
+		$this->forAdmin = $forAdmin;
+	}
+
+	public function render($view = 'index', $data = null, $theme = 'user', $layout = 'main') {
+		if ( $this->forAdmin && !App::isAdmin() ) {
+			return Controller::redirect('/admin');
+		}
+
+		if ( $this->forAdmin ) {
+			$theme = 'admin';
 			$layout = 'admin';
 		}
 

@@ -1,7 +1,6 @@
 <?php
 
 require_once(CORE_PATH . 'base/ControllerAdmin.php');
-require_once(APP_PATH . 'controllers/ControllerArticle.php');
 require_once(APP_PATH . 'models/Article.php');
 
 class ControllerArticle extends ControllerAdmin {
@@ -10,6 +9,10 @@ class ControllerArticle extends ControllerAdmin {
             'articles',
             Article::all()
         );
+    }
+
+    public function actionShowArticles() {
+        return Controller::redirect('/admin');
     }
 
     public function actionModify() {
@@ -30,14 +33,14 @@ class ControllerArticle extends ControllerAdmin {
     }
 
     public function actionSave() {
-        ControllerArticle::saveArticle($_POST);
+        Article::saveArticle($_POST);
 
-        return Controller::redirect('/admin/show-articles');
+        return Controller::redirect('/admin/article');
     }
 
     public function actionDelete() {
-        ControllerArticle::deleteArticle($_GET['id']);
+        Article::deleteArticle($_GET['id']);
 
-        return Controller::redirect('/admin/show-articles');
+        return Controller::redirect('/admin/article');
     }
 }

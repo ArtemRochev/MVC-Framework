@@ -15,7 +15,7 @@ class App {
 		self::$host = $config['host'];
 	}
 
-	private function parseRoute() {
+	public static function parseRoute() {
 		$request = $_SERVER['REQUEST_URI'];
 		$data = explode('?', $request);
 		$admin = false;
@@ -96,7 +96,7 @@ class App {
 		$actionName;
 		$model;
 		$controller;
-		$routesData = $this->parseRoute();
+		$routesData = self::parseRoute();
 
 		$controllerName = $this->getControllerName($routesData['routes']);
 		$actionName = $this->getActionName($routesData['routes']);

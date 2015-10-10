@@ -18,6 +18,7 @@
         </textarea>
     </div>
     <div class="form-group">
+        <input type="hidden" name="id" value="<?= $data['article']->id ?>" required>
         <a class="btn btn-blue" href="#" target="_blank">Предварительный просмотр</a>
         <button type="submit" class="btn btn-green">Отправить</button>
     </div>

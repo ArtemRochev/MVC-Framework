@@ -1,7 +1,5 @@
 <?php
 
-require_once(CORE_PATH . 'base/Model.php');
-
 class Article extends Model {
 	protected $parent = 'author';
 	protected $childrens = ['comment'];
@@ -24,5 +22,33 @@ class Article extends Model {
 
 	public function getCommentCount() {
 		return Article::getCount('comment', ['article_id' => $this->id]);
+	}
+
+	public static function saveArticle($params) {
+		if ( isset($params['id']) ) {
+			$article = Article::findById($params['id']);
+		} else {
+			$article = new Article;
+		}
+
+		if ( $article->checkRequiredColumns($params) ) {
+			$url = Text::translitUrl($params['title']);
+
+			$article->author_id = 1;
+			$article->title = $params['title'];
+			$article->url = $url;
+			$article->url_md5 = md5($url);
+			$article->content = $params['content'];
+			$article->img_preview_url = $params['img_preview_url'];
+
+			$article->save();
+		}
+	}
+
+	public function deleteArticle($id) {
+		if ( isset($id) ) {
+			$article = new Article($id);
+			$article->delete();
+		}
 	}
 }

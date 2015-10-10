@@ -96,10 +96,10 @@ class DatabaseRecord {
 
     public function save() {
         if ( $this->modified || !$this->id ) {
-            if ( !$this->id ) {
-                $this->insert();
-            } else {
+            if ( isset($this->id ) ) {
                 $this->update();
+            } else {
+                $this->insert();
             }
         }
 

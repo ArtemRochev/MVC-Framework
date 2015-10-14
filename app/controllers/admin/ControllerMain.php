@@ -10,7 +10,7 @@ require_once(TOOLS_PATH . 'Text.php');
 class ControllerMain extends ControllerAdmin {
 	function actionIndex() {
 		if ( App::isAdmin() ) {
-			Controller::redirect('admin/article');
+			Controller::redirect('/admin/article');
 		} else {
 			Controller::redirect('/log-in');
 		}

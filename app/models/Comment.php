@@ -6,11 +6,14 @@ class Comment extends Model {
 	protected $parent = 'author';
 	protected $childrens = [];
 	
-	public static function saveComment($data) {
-		//die('f');
+	public static function saveComment($data, $isGuest = false) {
 		$comment = new Comment();
 
-		$comment->author_id = $data['author_id'];
+		if ( $isGuest ) {
+			$comment->author_id = 2; //Guest
+		} else {
+			$comment->author_id = $data['author_id'];
+		}
 		$comment->article_id = $data['article_id'];
 		$comment->text = $data['text'];
 		$comment->save();

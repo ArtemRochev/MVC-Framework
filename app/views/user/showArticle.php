@@ -44,11 +44,14 @@
 </div>
 
 
-<form id="addComment" role="form" method="post" action="<?= Url::to('article/save-comment') ?>">
+<form id="addComment" role="form" method="post" action="<?= Url::to('/article/save-comment') ?>">
     <h3>Написать коментарий</h3>
 
-    <label>Ид автора</label>
-    <input type="text" value="1" name="author_id" required>
+    <?php
+        if ( App::isAdmin() ) {
+            echo '<input type="hidden" value="1" name="author_id" required>';
+        }
+    ?>
 
     <label>Текст</label>
     <textarea rows="5" name="text" required></textarea>

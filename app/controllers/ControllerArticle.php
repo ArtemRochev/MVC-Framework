@@ -18,9 +18,9 @@ class ControllerArticle extends Controller {
 	}
 	
 	public function actionShow() {
-		$urlHash = md5(end(App::parseRoute($_SERVER['REQUEST_URI'])['routes']));
+		$url = end(App::parseRoute($_SERVER['REQUEST_URI'])['routes']);
 		$article = Article::findOne([
-			'url_md5' => $urlHash
+			'url_crc' => crc32($url)
 		]);
 
 		if ( empty($article) && !article ) {
@@ -41,17 +41,18 @@ class ControllerArticle extends Controller {
 			return $this->redirect('/article');
 		}
 
-		Comment::saveComment($_POST);
-		$this->redirect(Url::to('/article/article', ['id' => $_POST['article_id']]));
+		Comment::saveComment($_POST, true);
+		//$this->redirect(Url::to('/article/show/' . $_POST['article_id']));
 	}
 
 	public function actionDeleteComment() {
-		if ( empty($_POST['id']) ) {
+		if ( empty($_POST['id']) || !App::isAdmin() ) {
 			return $this->redirect('/article');
 		}
 
+		$currentArticleUrl = Article::findById(Comment::findById($_POST['id'])->article_id)->url;
 		Comment::deleteComment($_POST['id']);
-		$this->redirect('/article');
+		$this->redirect('/article/show/' . $currentArticleUrl);
 	}
 
 	public static function delete($id) {

@@ -8,5 +8,6 @@ $config = [
 		'pass' => '1111'
 	],
 	'character' => 'utf8',
-	'host' => 'localhost'
+	'host' => 'localhost:70',
+	'port' => 70
 ];

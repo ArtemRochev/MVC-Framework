@@ -26,7 +26,7 @@
 
 .comment-block {
     position: relative;
-    width: 70%;
+    max-width: 600px;
     margin-bottom: 1px;
     padding: 15px;
     background: rgba(0,0,50,0.1);

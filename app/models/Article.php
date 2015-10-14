@@ -37,7 +37,7 @@ class Article extends Model {
 			$article->author_id = 1;
 			$article->title = $params['title'];
 			$article->url = $url;
-			$article->url_md5 = md5($url);
+			$article->url_crc = crc32($url);
 			$article->content = $params['content'];
 			$article->img_preview_url = $params['img_preview_url'];
 

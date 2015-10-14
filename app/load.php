@@ -8,6 +8,7 @@ define('TOOLS_PATH', CORE_PATH . 'tools/');
 
 require_once(APP_PATH . 'config.php');
 require_once(CORE_PATH . 'exceptions.php');
+require_once(CORE_PATH . 'systemFunctions.php');
 require_once(CORE_PATH . 'base/Model.php');
 require_once(CORE_PATH . 'base/View.php');
 require_once(CORE_PATH . 'base/Controller.php');

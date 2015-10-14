@@ -9,10 +9,10 @@ class App {
 	const DEFAULT_ACTION = 		'actionIndex';
 
 	//public static $user;
-	public static $host;
+	public static $config;
 
 	public function __construct($config) {
-		self::$host = $config['host'];
+		self::$config = $config;
 	}
 
 	public static function parseRoute() {
@@ -105,14 +105,9 @@ class App {
 		$modelName = 'Model' . $controllerName;
 		$controllerName = 'Controller' . $controllerName;
 
-		if ( !empty($_GET['debug']) ) {
-			echo "Controller: $controllerName <br>";
-			echo "Action: $actionName <br>";
-			echo "Model: $modelName <br>";
-
-			var_dump($routesData);
-			die();
-		}
+		_debug("Controller: $controllerName");
+		_debug("Action: $actionName");
+		_debug("Model: $modelName");
 
 		$this->includeController($controllerName, $routesData['admin']);
 		$this->includeModel($modelName);

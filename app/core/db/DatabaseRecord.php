@@ -94,6 +94,10 @@ class DatabaseRecord {
         return self::execute($query, $queryArgs, 'single')['count'];
     }
 
+    public function getFields() {
+        return $this->fields;
+    }
+
     public function save() {
         if ( $this->modified || !$this->id ) {
             if ( isset($this->id ) ) {
@@ -180,10 +184,6 @@ class DatabaseRecord {
 
         foreach ( $params as $paramsPack) {
             $objList[] = self::buildObject($paramsPack);
-        }
-
-        if ( count($objList) == 1 ) {
-            return $objList[0];
         }
 
         return $objList;

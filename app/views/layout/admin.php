@@ -17,8 +17,8 @@
 		<h3 class="text-center">Admin</h3>
 
 		<ul class="menu">
-			<li><a href="/admin">Главная</a></li>
-			<li><a href="/admin/article">Статьи</a></li>
+			<li><a href="<?= Url::to('/admin') ?>">Главная</a></li>
+			<li><a href="<?= Url::to('/admin/article') ?>">Статьи</a></li>
 		</ul>
 	</aside>
 

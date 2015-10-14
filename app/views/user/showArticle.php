@@ -19,28 +19,10 @@
 
 <div id="commentsList">
     <?php
-        if ( App::isAdmin() ) {
-            $deleteBtn = '<button class="btn">delete</button>';
-        } else {
-            $deleteBtn = '';
+        foreach ( $data['comments'] as $comment ) {
+            $this->includeTemplate('commentBlock.php', $comment);
         }
     ?>
-
-    <?php foreach ( $data['comments'] as $comment ) { ?>
-        <div class="comment-block">
-            <h3 class="author">
-                <?= $comment->author->name; ?>
-            </h3>
-            <p class="text">
-                <?= $comment->text; ?>
-            </p>
-
-            <form class="button-panel" method="post" action="/article/delete-comment">
-                <input type="hidden" name="id" value="<?= $comment->id ?>">
-                <?= $deleteBtn ?>
-            </form>
-        </div>
-    <?php }?>
 </div>
 
 

@@ -27,7 +27,9 @@ class View {
 		include($layout);
 	}
 
-	public function includeTemplate($template, $data = '') {
-		include(VIEWS_PATH . $template);
+	public function includeTemplate($template, $data = [], $theme = 'user') {
+		_debug(Html::tag('p', '[TPL+ ' . $template . ']'));
+		include(VIEWS_PATH . "/$theme/$template");
+		_debug(Html::tag('p', '[TPL- ' . $template . ']'));
 	}
 }

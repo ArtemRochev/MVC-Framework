@@ -23,7 +23,9 @@ class ControllerArticle extends Controller {
 			'url_crc' => crc32($url)
 		]);
 
-		if ( empty($article) && !article ) {
+		_debug('Url: ' . $url . ' (crc: ' . crc32($url) . ')');
+
+		if ( empty($article) ) {
 			return Controller::redirectTo404($_SERVER['REQUEST_URI']);
 		}
 
@@ -42,7 +44,7 @@ class ControllerArticle extends Controller {
 		}
 
 		Comment::saveComment($_POST, true);
-		//$this->redirect(Url::to('/article/show/' . $_POST['article_id']));
+		$this->redirect(Url::to('/article/show/' . $_POST['article_id']));
 	}
 
 	public function actionDeleteComment() {

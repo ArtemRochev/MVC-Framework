@@ -32,5 +32,5 @@ $app = new App($config);
 try {
 	$app->run();
 } catch (NotFoundException $e) {
-	Controller::redirectTo404($_SERVER['REQUEST_URI']);
+	Controller::redirectTo404(explode('?', $_SERVER['REQUEST_URI'])[0]);
 }

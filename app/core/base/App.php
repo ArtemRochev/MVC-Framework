@@ -90,6 +90,21 @@ class App {
 		}
 	}
 
+	public static function isAdmin() {
+		if ( isset($_COOKIE['token']) && isset($_COOKIE['user_id']) ) {
+			$user = User::findById($_COOKIE['user_id']);
+			//var_dump('User: (' . $user->token . ')');
+			//var_dump($_COOKIE['token']);
+			//var_dump($user->token);
+
+			if ( $_COOKIE['token'] == $user->token && $user->is_admin ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public function run() {
 		$modelName;
 		$controllerName;
@@ -119,17 +134,5 @@ class App {
 		} else {
 			throw new NotFoundException("404");
 		}
-	}
-
-	public static function isAdmin() {
-		if ( isset($_COOKIE['token']) && isset($_COOKIE['user_id']) ) {
-			$user = User::findById($_COOKIE['user_id']);
-
-			if ( $_COOKIE['token'] == $user->token && $user->is_admin ) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 }

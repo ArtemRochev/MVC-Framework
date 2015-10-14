@@ -138,8 +138,13 @@ class DatabaseRecord {
         $table = strtolower($class);
         $queryArgs = [];
         $query = self::buildSelectQuery($table, '*', $where, $queryArgs);
+        $params = self::execute($query, $queryArgs, 'single');
 
-        return self::buildObject(self::execute($query, $queryArgs, 'single'));
+        if ( !$params ) {
+            return false;
+        }
+
+        return self::buildObject($params);
     }
     
     public static function all($select = '*') {

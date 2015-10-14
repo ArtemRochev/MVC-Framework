@@ -1,7 +1,7 @@
 <?php
 
 function _debug($msg, $args = null, $stopScript = false){
-    if ( !empty($_GET['debug']) ) {
+    if ( !empty($_GET['debug']) && $_COOKIE['user_id'] == 1 ) {
         $msg = "<p style=\"font-size:13;color:rgb(22, 64, 72)\">$msg</p>";
 
         if ( $args ) {
@@ -9,9 +9,8 @@ function _debug($msg, $args = null, $stopScript = false){
         } else {
             echo $msg;
         }
-    }
-
-    if ( $stopScript ) {
-        die;
+        if ( $stopScript ) {
+            die;
+        }
     }
 }

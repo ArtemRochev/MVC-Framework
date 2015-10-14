@@ -43,6 +43,9 @@ class Article extends Model {
 
 			$article->save();
 		}
+
+		_debug('saving article...');
+		_debug('url: ' . $url . ' (crc: ' . crc32($url) . ')', true);
 	}
 
 	public function deleteArticle($id) {

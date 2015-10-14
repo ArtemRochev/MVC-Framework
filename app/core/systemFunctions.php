@@ -1,6 +1,6 @@
 <?php
 
-function _debug($msg, $args = null){
+function _debug($msg, $args = null, $stopScript = false){
     if ( !empty($_GET['debug']) ) {
         $msg = "<p style=\"font-size:13;color:rgb(22, 64, 72)\">$msg</p>";
 
@@ -9,5 +9,9 @@ function _debug($msg, $args = null){
         } else {
             echo $msg;
         }
+    }
+
+    if ( $stopScript ) {
+        die;
     }
 }

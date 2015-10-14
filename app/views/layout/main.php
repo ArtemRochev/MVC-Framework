@@ -16,9 +16,9 @@
 	<div id="topPanel">
 		<div class="w-limmiter main-col">
 			<ul>
-				<li><a href="/" class="title">Home</a></li>
-				<li><a href="/article" class="title">Article</a></li>
-				<li><a href="/admin" class="title">Admin</a></li>
+				<li><a href="<?= Url::to('/') ?>" class="title">Home</a></li>
+				<li><a href="<?= Url::to('/article') ?>" class="title">Article</a></li>
+				<li><a href="<?= Url::to('/admin') ?>" class="title">Admin</a></li>
 			</ul>
 
 			<div id="user">

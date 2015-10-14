@@ -28,6 +28,6 @@ class ControllerLogIn extends ControllerAdmin {
             return $this->redirect('/admin');
         }
 
-        return $this->redirect('/log-in?error=Email or Password is incorrect');
+        return $this->redirect('/log-in?error=1');
     }
 }

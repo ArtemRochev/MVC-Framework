@@ -1,5 +1,7 @@
 <?php
 
+require_once(TOOLS_PATH . 'Html.php');
+
 abstract class Controller {
 	public $model;
 	public $view;
@@ -8,7 +10,9 @@ abstract class Controller {
 		$this->view = new View();
 	}
 
-	public static function redirect($route) {
+	public static function redirect($route, $params = []) {
+		_debug('Redirect: ' . Html::a(Url::to(App::$config['host'] . $route, $params)), null, true);
+
 		header('Location: ' . $route);
 	}
 
